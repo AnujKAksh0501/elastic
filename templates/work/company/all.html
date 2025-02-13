@@ -1,0 +1,210 @@
+{% extends "layouts/work.html" %}
+{% load static %}
+{% block title %}Elastic | Work | All Companies{% endblock %}
+{% block content %}
+            <div class="page-header">
+                <div class="page-header-left d-flex align-items-center">
+                    <div class="page-header-title">
+                        <h5 class="m-b-10">Welcome {{ user.first_name }}</h5>
+                    </div>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'AdminDashboard' %}">Dashboard</a></li>
+                        <li class="breadcrumb-item">All Companies</li>
+                    </ul>
+                </div>
+                <div class="page-header-right ms-auto">
+                    <div class="page-header-right-items">
+                        <div class="d-flex d-md-none">
+                            <a href="javascript:void(0)" class="page-header-right-close-toggle">
+                                <i class="feather-arrow-left me-2"></i>
+                                <span>Back</span>
+                            </a>
+                        </div>
+                        <div class="d-flex align-items-center gap-2 page-header-right-items-wrapper">
+                            <a href="javascript:void(0);" class="btn btn-icon btn-light-brand" data-bs-toggle="collapse" data-bs-target="#collapseOne">
+                                <i class="feather-bar-chart"></i>
+                            </a>
+                            <a href="{% url 'AdminCreateCompany' %}" class="btn btn-primary">
+                                <i class="feather-plus me-2"></i>
+                                <span>Create Company</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="collapseOne" class="accordion-collapse collapse page-header-collapse">
+                <div class="accordion-body pb-2">
+                    <div class="row">
+                        <div class="col-xxl-3 col-md-6">
+                            <div class="card stretch stretch-full">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center justify-content-between">
+                                        <div class="d-flex align-items-center gap-3">
+                                            <div class="avatar-text avatar-xl rounded">
+                                                <i class="feather-users"></i>
+                                            </div>
+                                            <a href="javascript:void(0);" class="fw-bold d-block">
+                                                <span class="d-block">Total Leads</span>
+                                                <span class="fs-24 fw-bolder d-block">26,595</span>
+                                            </a>
+                                        </div>
+                                        <div class="badge bg-soft-success text-success">
+                                            <i class="feather-arrow-up fs-10 me-1"></i>
+                                            <span>36.85%</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xxl-3 col-md-6">
+                            <div class="card stretch stretch-full">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center justify-content-between">
+                                        <div class="d-flex align-items-center gap-3">
+                                            <div class="avatar-text avatar-xl rounded">
+                                                <i class="feather-user-check"></i>
+                                            </div>
+                                            <a href="javascript:void(0);" class="fw-bold d-block">
+                                                <span class="d-block">Active Leads</span>
+                                                <span class="fs-24 fw-bolder d-block">2,245</span>
+                                            </a>
+                                        </div>
+                                        <div class="badge bg-soft-danger text-danger">
+                                            <i class="feather-arrow-down fs-10 me-1"></i>
+                                            <span>24.56%</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xxl-3 col-md-6">
+                            <div class="card stretch stretch-full">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center justify-content-between">
+                                        <div class="d-flex align-items-center gap-3">
+                                            <div class="avatar-text avatar-xl rounded">
+                                                <i class="feather-user-plus"></i>
+                                            </div>
+                                            <a href="javascript:void(0);" class="fw-bold d-block">
+                                                <span class="d-block">New Leads</span>
+                                                <span class="fs-24 fw-bolder d-block">1,254</span>
+                                            </a>
+                                        </div>
+                                        <div class="badge bg-soft-success text-success">
+                                            <i class="feather-arrow-up fs-10 me-1"></i>
+                                            <span>33.29%</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xxl-3 col-md-6">
+                            <div class="card stretch stretch-full">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center justify-content-between">
+                                        <div class="d-flex align-items-center gap-3">
+                                            <div class="avatar-text avatar-xl rounded">
+                                                <i class="feather-user-minus"></i>
+                                            </div>
+                                            <a href="javascript:void(0);" class="fw-bold d-block">
+                                                <span class="d-block">Inactive Leads</span>
+                                                <span class="fs-24 fw-bolder d-block">4,586</span>
+                                            </a>
+                                        </div>
+                                        <div class="badge bg-soft-danger text-danger">
+                                            <i class="feather-arrow-down fs-10 me-1"></i>
+                                            <span>42.47%</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="main-content">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card stretch stretch-full">
+                            <div class="card-body p-0">
+                                <div class="table-responsive">
+                                    <table class="table table-hover" id="allCompanies">
+                                        <thead>
+                                            <tr>
+                                                <th>Company ID</th>
+                                                <th>Name</th>
+                                                <th>Email</th>
+                                                <th>Mobile Number</th>
+                                                <th>Users</th>
+                                                <th>Status</th>
+                                                <th class="text-end">Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for company in companies %}
+                                            <tr class="single-item">
+                                                <td>{{ company.unique_code }}</td>
+                                                <td>
+                                                    <a href="{% url 'AdminEditCompanyDetails' company.unique_code %}" class="hstack gap-3">
+                                                        <div><span class="text-truncate-1-line">{{ company.name }}</span></div>
+                                                    </a>
+                                                </td>
+                                                <td><a href="mailto:{{ company.email }}">{{ company.email }}</a></td>
+                                                <td><a href="tel:+1{{ company.mobile }}">+1{{ company.mobile }}</a></td>
+                                                <td>{{ company.users }}</td>
+                                                <td>{{ company.status }}</td>
+                                                <td>
+                                                    <div class="hstack gap-2 justify-content-end">
+                                                        <div class="hstack gap-2 justify-content-end">
+                                                            <a href="{% url 'AdminViewCompanyLeads' company.unique_code %}" class="avatar-text avatar-md" title="View Company Leads"><i class="feather feather-wifi"></i></a>
+                                                            <a href="{% url 'AdminEditCompanyDetails' company.unique_code %}" class="avatar-text avatar-md" title="Edit Company Details"><i class="feather feather-edit"></i></a>
+                                                            <a href="{% url 'AdminAddNewCompanyUser' company.unique_code %}" class="avatar-text avatar-md" title="Add New User"><i class="feather feather-user-plus"></i></a>
+                                                            <a href="{% url 'AdminAllCompanyUser' company.unique_code %}" class="avatar-text avatar-md" title="All Company Users"><i class="feather feather-users"></i></a>
+                                                            <a href="javascript:void(0);" data-id="{{ company.unique_code }}" class="delete-company avatar-text avatar-md text-danger" data-bs-toggle="modal" data-bs-target="#deleteCompany" title="Delete Company Records"><i class="feather feather-trash"></i></a>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade show" id="deleteCompany" tabindex="-1" role="dialog" aria-modal="true">
+                <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modalTitleId">Delete Company Records</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="notes-box">
+                                <div class="notes-content">
+                                    <form method="post" action="{% url 'AdminDeleteCompany' %}">
+                                        {% csrf_token %}
+                                        <div class="row">
+                                            <div class="col-md-12 mb-3">
+                                                <div class="note-title">
+                                                    <h3>Are your sure you want to delet selected company details from records?</h3>
+                                                    <input type="hidden" id="dcid" name="dcid" value="">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-success" data-dismiss="modal">No</button>
+                            <button id="btn-n-add" class="btn btn-danger">Yes Delete</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+{% endblock content %}

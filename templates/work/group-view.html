@@ -1,0 +1,174 @@
+{% extends "layouts/work.html" %}
+{% load static %}
+{% block title %}Elastic | Work | Group Details{% endblock %}
+{% block content %}
+            <div class="page-header">
+                <div class="page-header-left d-flex align-items-center">
+                    <div class="page-header-title">
+                        <h5 class="m-b-10">Welcome {{ user.first_name }}</h5>
+                    </div>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'AdminDashboard' %}">Dashboard</a></li>
+                        <li class="breadcrumb-item"><a href="{% url 'AdminAllGroups' %}">All Groups</a></li>
+                        <li class="breadcrumb-item">Group Details</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="main-content">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card stretch stretch-full">
+                            <form method="post" action="{% url 'AdminUpdateGroupDetails' %}">
+                                {% csrf_token %}
+                                <div class="card-body general-info">
+                                    <div class="mb-5 d-flex align-items-center justify-content-between">
+                                        <h5 class="fw-bold mb-0 me-4">
+                                            <span class="d-block mb-2">Group Info :</span>
+                                            <span class="fs-12 fw-normal text-muted text-truncate-1-line">General information about your group</span>
+                                        </h5>
+                                    </div>
+                                    <div class="row mb-4 align-items-center">
+                                        <div class="col-lg-4">
+                                            <label for="name" class="fw-semibold">Name <sup class="text-danger"><b>*</b></sup>: </label>
+                                        </div>
+                                        <div class="col-lg-8">
+                                            <div class="input-group">
+                                                <div class="input-group-text"><i class="feather-user"></i></div>
+                                                <input type="hidden" id="group" name="group" value="{{ group.unique_code }}">
+                                                <input type="text" class="form-control" id="name" name="name" placeholder="Name" value="{{ group.name }}" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-4 align-items-center">
+                                        <div class="col-lg-4">
+                                            <label for="filter" class="fw-semibold">Filter <sup class="text-danger"><b>*</b></sup>: </label>
+                                        </div>
+                                        <div class="col-lg-8">
+                                            <div class="input-group">
+                                                <div class="input-group-text"><i class="feather-filter"></i></div>
+                                                <select type="text" class="form-control form-select" id="filter" name="filter" required>
+                                                    <option value="" hidden> -- Select Filter -- </option>
+                                                    <option value="All" {% if group.filter == 'All' %} selected {% endif %}>All (Send to all Groups)</option>
+                                                    <option value="RR" {% if group.filter == 'RR' %} selected {% endif %}>RR (Round Robin)</option>
+                                                    <option value="RRobin" {% if group.filter == 'RRobin' %} selected {% endif %}>RRobin (1-1 Round Robin)</option>
+                                                    <option value="Custom" {% if group.filter == 'Custom' %} selected {% endif %}>Custom (Create Rule)</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-4 align-items-center">
+                                        <div class="col-lg-4">
+                                            <label for="gstatus" class="fw-semibold">Status <sup class="text-danger"><b>*</b></sup>: </label>
+                                        </div>
+                                        <div class="col-lg-8">
+                                            <div class="input-group">
+                                                <div class="input-group-text"><i class="feather-filter"></i></div>
+                                                <select type="text" class="form-control form-select" id="gstatus" name="status" required>
+                                                    <option value="" hidden> -- Select Status -- </option>
+                                                    <option value="Active" {% if group.status == 'Active' %} selected {% endif %}>Active</option>
+                                                    <option value="Inactive" {% if group.status == 'Inactive' %} selected {% endif %}>Inactive</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% if group.filter == 'Custom' %}
+                                    <div class="rules row mb-4">
+                                        <div class="col-lg-12">
+                                            <div class="mb-4">
+                                                <h5 class="fw-bold">Add/Edit Rules:</h5>
+                                            </div>
+                                            <div class="table-responsive">
+                                                {{ type }}
+                                                <table class="table table-bordered" id="groupRules">
+                                                    <thead>
+                                                        <tr class="single-item">
+                                                            <th scope="col" width="2%"><input id="checkAll" type="checkbox"></th>
+                                                            <th scope="col">Select Field <sup class="fa-solid fa-asterisk text-danger"></sup></th>
+                                                            <th scope="col">Condition <sup class="fa-solid fa-asterisk text-danger"></sup></th>
+                                                            <th scope="col">Value <sup class="fa-solid fa-asterisk text-danger"></sup></th>
+                                                            <th scope="col">Add Logic</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {% for data in group.rule %}
+                                                        <tr>
+                                                            <td scope="row" data-label="" class="text-center">
+                                                                <input class="itemRow" type="checkbox">
+                                                            </td>
+                                                            <td scope="row" data-label="Field">
+                                                                <select class="field form-control custom active" name="field[]" id="field{{ group.id }}">
+                                                                    <option value="" hidden> -- Select Field -- </option>
+                                                                    <option value="name" {% if data.field == 'name' %} selected {% endif %}>Name</option>
+                                                                    <option value="email" {% if data.field == 'email' %} selected {% endif %}>Email</option>
+                                                                    <option value="phone" {% if data.field == 'phone' %} selected {% endif %}>Phone</option>
+                                                                    <option value="make" {% if data.field == 'make' %} selected {% endif %}>Make</option>
+                                                                    <option value="model" {% if data.field == 'model' %} selected {% endif %}>Model</option>
+                                                                    <option value="year" {% if data.field == 'year' %} selected {% endif %}>Year</option>
+                                                                    <option value="size" {% if data.field == 'size' %} selected {% endif %}>Size</option>
+                                                                    <option value="part" {% if data.field == 'part' %} selected {% endif %}>Part</option>
+                                                                    <option value="website" {% if data.field == 'website' %} selected {% endif %}>Website</option>
+                                                                </select>
+                                                            </td>
+                                                            <td scope="row" data-label="Condition">
+                                                                <select class="condition form-control custom active" name="condition[]" id="condition{{ group.id }}">
+                                                                    <option value="" hidden> -- Select Condition -- </option>
+                                                                    <option value="equal" {% if data.condition == 'equal' %} selected {% endif %}>Equal To</option>
+                                                                    <option value="not_equal" {% if data.condition == 'not_equal' %} selected {% endif %}>Not Equal To</option>
+                                                                    <option value="greater_than" {% if data.condition == 'greater_than' %} selected {% endif %}>Greater Than</option>
+                                                                    <option value="greater_than_equal" {% if data.condition == 'greater_than_equal' %} selected {% endif %}>Greater Than or Equal To</option>
+                                                                    <option value="lesser_than" {% if data.condition == 'lesser_than' %} selected {% endif %}>Lesser Than</option>
+                                                                    <option value="lesser_than_equal" {% if data.condition == 'lesser_than_equal' %} selected {% endif %}>Lesser Than or Equal To</option>
+                                                                    <option value="not_null" {% if data.condition == 'not_null' %} selected {% endif %}>Not Null</option>
+                                                                </select>
+                                                            </td>
+                                                            <td scope="row" data-label="Value">
+                                                                <input type="text" class="value form-control custom active" name="value[]" id="value{{ group.id }}" value="{{ data.value }}" placeholder="Enter Value">
+                                                            </td>
+                                                            <td scope="row" data-label="Logic">
+                                                                <select class="logic form-control custom active" name="logic[]" id="logic{{ group.id }}">
+                                                                    <option value="" hidden> -- Select Logic -- </option>
+                                                                    <option value="none" {% if data.logic == 'none' %} selected {% endif %}>None</option>
+                                                                    <option value="and" {% if data.logic == 'and' %} selected {% endif %}>And</option>
+                                                                    <option value="or" {% if data.logic == 'or' %} selected {% endif %}>Or</option>
+                                                                </select>
+                                                            </td>
+                                                        </tr>
+                                                        {% endfor %}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <div class="d-flex justify-content-end gap-2 mt-3">
+                                                <button type="button" id="remove" class="btn btn-md bg-soft-danger text-danger">Delete</button>
+                                                <button type="button" id="addmore" class="btn btn-md btn-primary">Add More</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% endif %}
+                                    <div class="row mb-4 align-items-center">
+                                        <div class="col-lg-4">
+                                            <label for="desc" class="fw-semibold">Description: </label>
+                                        </div>
+                                        <div class="col-lg-8">
+                                            <div class="input-group">
+                                                <div class="input-group-text"><i class="feather-file"></i></div>
+                                                <textarea type="text" class="form-control" id="desc" name="desc" placeholder="Description" rows="5">{{ group.description }}</textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-4">
+                                        <div class="col-lg-9"></div>
+                                        <div class="col-lg-3 text-end">
+                                            <button type="submit" class="btn btn-primary w-100">
+                                                <i class="feather-save me-2"></i>
+                                                <span>Save Changes</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+{% endblock content %}

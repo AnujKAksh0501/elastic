@@ -1,0 +1,38 @@
+{% extends "layouts/work.html" %}
+{% load static %}
+{% block title %}Elastic | Admin | Dashboard{% endblock %}
+{% block content %}
+            <div class="page-header mb-4">
+                <div class="page-header-left d-flex align-items-center">
+                    <div class="page-header-title">
+                        <h5 class="m-b-10">Welcome {{ user.first_name }}!</h5>
+                    </div>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item">Dashboard</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="main-content px-4">
+                <div class="row">
+                    {% for tmp in data %}
+                    <div class="col-xl-3 col-lg-3 col-md-6 col-xs-12 col-sm-12 mb-3">
+                        <div class="card stretch stretch-full">
+                            <div class="card-body">
+                                <div class="hstack justify-content-between mb-2">
+                                    <div>
+                                        <div class="hstack gap-2 mb-2"><span>{{ tmp.domain }} > Leads</span></div>
+                                        <h3 class="fw-bolder mb-2"><span class="counter">Today: {{ tmp.today }}</span></h3>
+                                        <p class="fs-12 text-muted mb-0">vs yesterday: <span class="fw-bold text-dark">{{ tmp.yesterday }}</span></p>
+                                    </div>
+                                    <a href="javascript:void(0);" class="badge {% if tmp.today >= tmp.yesterday %} bg-soft-success text-success {% else %} bg-soft-danger text-danger {% endif %}">
+                                        {{ tmp.change|floatformat:2 }}%
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+{% endblock content %}

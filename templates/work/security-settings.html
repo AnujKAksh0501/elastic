@@ -1,0 +1,123 @@
+{% extends "layouts/work.html" %}
+{% load static %}
+{% block title %}Elastic | Work | Security Settings{% endblock %}
+{% block content %}
+            <div class="page-header">
+                <div class="page-header-left d-flex align-items-center">
+                    <div class="page-header-title">
+                        <h5 class="m-b-10">Welcome {{ user.first_name }}</h5>
+                    </div>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'AdminDashboard' %}">Dashboard</a></li>
+                        <li class="breadcrumb-item">Security Settings</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="main-content">
+                <div class="row mb-3">
+                    <div class="col-lg-12">
+                        <div class="card stretch stretch-full">
+                            <form method="post" action="{% url 'AdminUpdatePassword' %}">
+                                {% csrf_token %}
+                                <div class="card-body general-info">
+                                    <div class="mb-5 d-flex align-items-center justify-content-between">
+                                        <h5 class="fw-bold mb-0 me-4">
+                                            <span class="d-block mb-2">Change account password</span>
+                                        </h5>
+                                    </div>
+                                    <div class="row mb-2 align-items-center">
+                                        <div class="col-lg-4 mb-2">
+                                            <label class="form-label" for="password">New Password <sup class="text-danger"><b>*</b></sup></label>
+                                            <input type="password" class="form-control" id="password" name="password" placeholder="*********" required>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3 align-items-center">
+                                        <div class="col-lg-4 mb-2">
+                                            <label class="form-label" for="cpassword">Confirm New Password <sup class="text-danger"><b>*</b></sup></label>
+                                            <input type="password" class="form-control" id="cpassword" name="cpassword" placeholder="*********" required>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-2">
+                                        <div class="col-lg-4">
+                                            <button type="submit" class="btn btn-primary w-100">
+                                                <i class="feather-lock me-2"></i>
+                                                <span>Update New Password</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                {% if user.otp_enabled == 'Disabled' %}
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card stretch stretch-full">
+                            <form method="post" action="{% url 'AdminEnableOtp' %}">
+                                {% csrf_token %}
+                                <div class="card-body general-info">
+                                    <div class="mb-3 d-flex align-items-center justify-content-between">
+                                        <h5 class="fw-bold mb-0 me-4">
+                                            <span class="d-block mb-2">Enable OTP Authentication</span>
+                                        </h5>
+                                    </div>
+                                    <div class="row mb-2 align-items-center">
+                                        <div class="col-lg-4 mb-2">
+                                            <h4>Enable Two Factor Authentication</h4>
+                                            <p>Two-factor authentication (2FA) is implemented to better protect both a user's credentials and the resources the user can access.</p>
+                                            <p>Two-factor authentication adds an additional layer of security to the authentication process by making it harder for attackers to gain access to a person's devices or online accounts because, even if the victim's password is hacked, a password alone is not enough to pass the authentication check.</p>
+                                            <p>Currently this method is disabled for your account.</p>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-2">
+                                        <div class="col-lg-4">
+                                            <button type="submit" class="btn btn-primary w-100">
+                                                <i class="feather-lock me-2"></i>
+                                                <span>Enable</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                {% else %}
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card stretch stretch-full">
+                            <form method="post" action="{% url 'AdminDisableOtp' %}">
+                                {% csrf_token %}
+                                <div class="card-body general-info">
+                                    <div class="mb-3 d-flex align-items-center justify-content-between">
+                                        <h5 class="fw-bold mb-0 me-4">
+                                            <span class="d-block mb-2">Disable OTP Authentication</span>
+                                        </h5>
+                                    </div>
+                                    <div class="row mb-2 align-items-center">
+                                        <div class="col-lg-4 mb-2">
+                                            <h4>Disable Two Factor Authentication</h4>
+                                            <p>Two-factor authentication (2FA) is implemented to better protect both a user's credentials and the resources the user can access.</p>
+                                            <p>Two-factor authentication adds an additional layer of security to the authentication process by making it harder for attackers to gain access to a person's devices or online accounts because, even if the victim's password is hacked, a password alone is not enough to pass the authentication check.</p>
+                                            <p>Currently this method is enabled for your account.</p>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-2">
+                                        <div class="col-lg-4">
+                                            <button type="submit" class="btn btn-primary w-100">
+                                                <i class="feather-lock me-2"></i>
+                                                <span>Disable</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+{% endblock content %}

@@ -1,0 +1,141 @@
+{% extends "layouts/work.html" %}
+{% load static %}
+{% block title %}Elastic | Work | Create New Contact{% endblock %}
+{% block content %}
+            <div class="page-header">
+                <div class="page-header-left d-flex align-items-center">
+                    <div class="page-header-title">
+                        <h5 class="m-b-10">Welcome {{ user.first_name }}</h5>
+                    </div>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'AdminDashboard' %}">Dashboard</a></li>
+                        <li class="breadcrumb-item"><a href="{% url 'AdminAllContacts' %}">All Contacts</a></li>
+                        <li class="breadcrumb-item">Create New Contact</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="main-content">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card stretch stretch-full">
+                            <form method="post" action="{% url 'AdminCreateContact' %}">
+                                {% csrf_token %}
+                                <div class="card-body general-info">
+                                    <div class="mb-5 d-flex align-items-center justify-content-between">
+                                        <h5 class="fw-bold mb-0 me-4">
+                                            <span class="d-block mb-2">Contact Info :</span>
+                                            <span class="fs-12 fw-normal text-muted text-truncate-1-line">General information about your contact</span>
+                                        </h5>
+                                    </div>
+                                    <div class="row mb-4 align-items-center">
+                                        <div class="col-lg-4">
+                                            <label for="name" class="fw-semibold">Name <sup class="text-danger"><b>*</b></sup>: </label>
+                                        </div>
+                                        <div class="col-lg-8">
+                                            <div class="input-group">
+                                                <div class="input-group-text"><i class="feather-user"></i></div>
+                                                <input type="text" class="form-control" id="name" name="name" placeholder="Name" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-4 align-items-center">
+                                        <div class="col-lg-4">
+                                            <label for="email" class="fw-semibold">Email <sup class="text-danger"><b>*</b></sup>: </label>
+                                        </div>
+                                        <div class="col-lg-8">
+                                            <div class="input-group">
+                                                <div class="input-group-text"><i class="feather-mail"></i></div>
+                                                <input type="email" class="form-control" id="email" name="email" placeholder="Email" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-4 align-items-center">
+                                        <div class="col-lg-4">
+                                            <label for="mobile" class="fw-semibold">Phone <sup class="text-danger"><b>*</b></sup>: </label>
+                                        </div>
+                                        <div class="col-lg-8">
+                                            <div class="input-group">
+                                                <div class="input-group-text"><i class="feather-phone"></i></div>
+                                                <input type="text" class="form-control" id="mobile" name="mobile" minlength="10" maxlength="10" placeholder="Phone" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-4 align-items-center">
+                                        <div class="col-lg-4">
+                                            <label for="address" class="fw-semibold">Address <sup class="text-danger"><b>*</b></sup>: </label>
+                                        </div>
+                                        <div class="col-lg-8">
+                                            <div class="input-group">
+                                                <div class="input-group-text"><i class="feather-map"></i></div>
+                                                <input type="text" class="form-control" id="address" name="address" placeholder="Address" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-4 align-items-center">
+                                        <div class="col-lg-4">
+                                            <label for="country" class="fw-semibold">Country <sup class="text-danger"><b>*</b></sup>: </label>
+                                        </div>
+                                        <div class="col-lg-8">
+                                            <div class="input-group">
+                                                <div class="input-group-text"><i class="feather-flag"></i></div>
+                                                <select type="text" class="country form-control form-select" id="country" name="country" required>
+                                                    <option value="" hidden> -- Select Country -- </option>
+                                                    {% for country in countries %}
+                                                    <option value="{{ country.name }}">{{ country.name }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-4 align-items-center">
+                                        <div class="col-lg-4">
+                                            <label for="state" class="fw-semibold">State <sup class="text-danger"><b>*</b></sup>: </label>
+                                        </div>
+                                        <div class="col-lg-8">
+                                            <div class="input-group">
+                                                <div class="input-group-text"><i class="feather-flag"></i></div>
+                                                <select type="text" class="state form-control form-select" id="state" name="state" required>
+                                                    <option value="" hidden> -- Select State -- </option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-4 align-items-center">
+                                        <div class="col-lg-4">
+                                            <label for="city" class="fw-semibold">City <sup class="text-danger"><b>*</b></sup>: </label>
+                                        </div>
+                                        <div class="col-lg-8">
+                                            <div class="input-group">
+                                                <div class="input-group-text"><i class="feather-flag"></i></div>
+                                                <input type="text" class="form-control" id="city" name="city" placeholder="City" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-4 align-items-center">
+                                        <div class="col-lg-4">
+                                            <label for="zip" class="fw-semibold">Zip/Postal Code <sup class="text-danger"><b>*</b></sup>: </label>
+                                        </div>
+                                        <div class="col-lg-8">
+                                            <div class="input-group">
+                                                <div class="input-group-text"><i class="feather-flag"></i></div>
+                                                <input type="text" class="form-control" id="zip" name="zip" placeholder="Zip/Postal Code" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-4">
+                                        <div class="col-lg-9"></div>
+                                        <div class="col-lg-3 text-end">
+                                            <button type="submit" class="btn btn-primary w-100">
+                                                <i class="feather-save me-2"></i>
+                                                <span>Save Details</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+{% endblock content %}

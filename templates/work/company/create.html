@@ -1,0 +1,123 @@
+{% extends "layouts/work.html" %}
+{% load static %}
+{% block title %}Elastic | Work | Create New Company{% endblock %}
+{% block content %}
+            <div class="page-header">
+                <div class="page-header-left d-flex align-items-center">
+                    <div class="page-header-title">
+                        <h5 class="m-b-10">Welcome {{ user.first_name }}</h5>
+                    </div>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'AdminDashboard' %}">Dashboard</a></li>
+                        <li class="breadcrumb-item"><a href="{% url 'AdminAllCompanies' %}">All Companies</a></li>
+                        <li class="breadcrumb-item">Create New Company</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="main-content">
+                <div class="row">
+                    <div class="col-lg-11">
+                        <div class="card stretch stretch-full">
+                            <form method="post" action="{% url 'AdminCreateCompany' %}">
+                                {% csrf_token %}
+                                <div class="card-body general-info">
+                                    <div class="mb-5 d-flex align-items-center justify-content-between">
+                                        <h5 class="fw-bold mb-0 me-4"><span class="d-block">Company Details:</span></h5>
+                                    </div>
+                                    <div class="row mb-4 align-items-center">
+                                        <div class="col-lg-4">
+                                            <label for="group" class="fw-semibold">Group: <sup class="text-danger">*</sup></label>
+                                        </div>
+                                        <div class="col-lg-8">
+                                            <div class="input-group">
+                                                <div class="input-group-text"><i class="feather-users"></i></div>
+                                                <select type="text" class="form-control" id="group" name="group" required>
+                                                    <option value="" hidden> -- Select Group -- </option>
+                                                    {% for grp in groups %}
+                                                    <option value="{{ grp.name }}">{{ grp.name }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-4 align-items-center">
+                                        <div class="col-lg-4">
+                                            <label for="name" class="fw-semibold">Company Name: <sup class="text-danger">*</sup></label>
+                                        </div>
+                                        <div class="col-lg-8">
+                                            <div class="input-group">
+                                                <div class="input-group-text"><i class="feather-user"></i></div>
+                                                <input type="text" class="form-control" id="name" name="name" placeholder="Enter Company Name" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-4 align-items-center">
+                                        <div class="col-lg-4">
+                                            <label for="email" class="fw-semibold">Email: <sup class="text-danger">*</sup></label>
+                                        </div>
+                                        <div class="col-lg-8">
+                                            <div class="input-group">
+                                                <div class="input-group-text"><i class="feather-mail"></i></div>
+                                                <input type="email" class="form-control" id="email" name="email" placeholder="Enter Company Email" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-4 align-items-center">
+                                        <div class="col-lg-4">
+                                            <label for="mobile" class="fw-semibold">Mobile Number: <sup class="text-danger">*</sup></label>
+                                        </div>
+                                        <div class="col-lg-8">
+                                            <div class="input-group">
+                                                <div class="input-group-text"><i class="feather-phone"></i></div>
+                                                <input type="text" class="form-control" id="mobile" name="mobile" minlength="10" maxlength="10" placeholder="Enter Company Mobile Number" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-4 align-items-center">
+                                        <div class="col-lg-4">
+                                            <label for="first_name" class="fw-semibold">Admin Name: <sup class="text-danger">*</sup></label>
+                                        </div>
+                                        <div class="col-lg-8">
+                                            <div class="row">
+                                                <div class="col-lg-6 mb-2">
+                                                    <div class="input-group">
+                                                        <div class="input-group-text"><i class="feather-user"></i></div>
+                                                        <input type="text" class="form-control" id="first_name" name="first_name" placeholder="Enter First Name" required>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6 mb-2">
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control" id="last_name" name="last_name" placeholder="Enter Last Name" required>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-4 align-items-center">
+                                        <div class="col-lg-4">
+                                            <label for="desc" class="fw-semibold">Description: </label>
+                                        </div>
+                                        <div class="col-lg-8">
+                                            <div class="input-group">
+                                                <div class="input-group-text"><i class="feather-type"></i></div>
+                                                <textarea class="form-control" id="desc" name="desc" cols="30" rows="5" placeholder="Write Company Description Here"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-4">
+                                        <div class="col-lg-9"></div>
+                                        <div class="col-lg-3 text-end">
+                                            <button type="submit" class="btn btn-primary w-100">
+                                                <i class="feather-save me-2"></i>
+                                                <span>Save Details</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+{% endblock content %}

@@ -1,0 +1,131 @@
+{% extends "layouts/work.html" %}
+{% load static %}
+{% block title %}Elastic | Work | Add New User{% endblock %}
+{% block content %}
+            <div class="page-header">
+                <div class="page-header-left d-flex align-items-center">
+                    <div class="page-header-title">
+                        <h5 class="m-b-10">Welcome {{ user.first_name }}</h5>
+                    </div>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'AdminDashboard' %}">Dashboard</a></li>
+                        <li class="breadcrumb-item"><a href="{% url 'AdminAllCompanies' %}">All companies</a></li>
+                        <li class="breadcrumb-item">Add New User</li>
+                    </ul>
+                </div>
+                <div class="page-header-right ms-auto">
+                    <div class="page-header-right-items">
+                        <div class="d-flex d-md-none">
+                            <a href="javascript:void(0)" class="page-header-right-close-toggle">
+                                <i class="feather-arrow-left me-2"></i>
+                                <span>Back</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="main-content">
+                <div class="row">
+                    <div class="col-lg-11">
+                        <div class="card stretch stretch-full">
+                            <form method="post" action="{% url 'AdminCreateNewCompanyUser' %}">
+                                {% csrf_token %}
+                                <div class="card-body general-info">
+                                    <div class="mb-5 d-flex align-items-center justify-content-between">
+                                        <h5 class="fw-bold mb-0 me-4"><span class="d-block">User Details:</span></h5>
+                                    </div>
+                                    <div class="row mb-4 align-items-center">
+                                        <div class="col-lg-4">
+                                            <label for="company" class="fw-semibold">Company: <sup class="text-danger">*</sup></label>
+                                        </div>
+                                        <div class="col-lg-8">
+                                            <div class="input-group">
+                                                <div class="input-group-text"><i class="feather-user"></i></div>
+                                                {% if type == 'Existing Company' %}
+                                                <input type="hidden" class="form-control" id="company" name="company" value="{{ company.id }}">
+                                                <input type="text" class="form-control" id="company_name" name="company_name" value="{{ company.name }}" readonly>
+                                                {% else %}
+                                                <select type="text" class="form-control" id="company" name="company" >
+                                                    <option value="" hidden> -- Select Company -- </option>
+                                                    {% for tmp in company %}
+                                                    <option value="{{ tmp.id }}">{{ tmp.name }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-4 align-items-center">
+                                        <div class="col-lg-4">
+                                            <label for="first_name" class="fw-semibold">Name: <sup class="text-danger">*</sup></label>
+                                        </div>
+                                        <div class="col-lg-8">
+                                            <div class="row">
+                                                <div class="col-lg-6 mb-2">
+                                                    <div class="input-group">
+                                                        <div class="input-group-text"><i class="feather-user"></i></div>
+                                                        <input type="text" class="form-control" id="first_name" name="first_name" placeholder="Enter First Name" required>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6 mb-2">
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control" id="last_name" name="last_name" placeholder="Enter Last Name" required>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-4 align-items-center">
+                                        <div class="col-lg-4">
+                                            <label for="email" class="fw-semibold">Email: <sup class="text-danger">*</sup></label>
+                                        </div>
+                                        <div class="col-lg-8">
+                                            <div class="input-group">
+                                                <div class="input-group-text"><i class="feather-mail"></i></div>
+                                                <input type="email" class="form-control" id="email" name="email" placeholder="Enter Email" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-4 align-items-center">
+                                        <div class="col-lg-4">
+                                            <label for="mobile" class="fw-semibold">Mobile Number: <sup class="text-danger">*</sup></label>
+                                        </div>
+                                        <div class="col-lg-8">
+                                            <div class="input-group">
+                                                <div class="input-group-text"><i class="feather-phone"></i></div>
+                                                <input type="text" class="form-control" id="mobile" name="mobile" minlength="10" maxlength="10" placeholder="Enter Mobile Number" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-4 align-items-center">
+                                        <div class="col-lg-4">
+                                            <label for="otp_enable" class="fw-semibold">Enable OTP Authentication: <sup class="text-danger">*</sup></label>
+                                        </div>
+                                        <div class="col-lg-8">
+                                            <div class="input-group">
+                                                <div class="input-group-text"><i class="feather-lock"></i></div>
+                                                <select type="text" class="form-control" id="otp_enable" name="otp_enable">
+                                                    <option value="" hidden> -- Select Option -- </option>
+                                                    <option value="No" selected>No</option>
+                                                    <option value="Yes">Yes</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-4">
+                                        <div class="col-lg-9"></div>
+                                        <div class="col-lg-3 text-end">
+                                            <button type="submit" class="btn btn-primary w-100">
+                                                <i class="feather-save me-2"></i>
+                                                <span>Save Details</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+{% endblock content %}

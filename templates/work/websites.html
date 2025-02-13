@@ -1,0 +1,163 @@
+{% extends "layouts/work.html" %}
+{% load static %}
+{% block title %}Elastic | Work | All Websites{% endblock %}
+{% block content %}
+            <div class="page-header">
+                <div class="page-header-left d-flex align-items-center">
+                    <div class="page-header-title">
+                        <h5 class="m-b-10">Welcome {{ user.first_name }}</h5>
+                    </div>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'AdminDashboard' %}">Dashboard</a></li>
+                        <li class="breadcrumb-item">All Websites</li>
+                    </ul>
+                </div>
+                <div class="page-header-right ms-auto">
+                    <div class="page-header-right-items">
+                        <div class="d-flex d-md-none">
+                            <a href="javascript:void(0)" class="page-header-right-close-toggle">
+                                <i class="feather-arrow-left me-2"></i>
+                                <span>Back</span>
+                            </a>
+                        </div>
+                        <div class="d-flex align-items-center gap-2 page-header-right-items-wrapper">
+                            <a href="javascript:void(0);" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addWebsite" title="Add New Website">
+                                <i class="feather-plus me-2"></i>
+                                <span>Add Website</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="main-content">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card stretch stretch-full">
+                            <div class="card-body p-0">
+                                <div class="card stretch stretch-full">
+                                    <div class="card-body p-0">
+                                        <div class="table-responsive">
+                                            <table class="table table-hover" id="allWebsites">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Data Key</th>
+                                                        <th>Domain</th>
+                                                        <th>Status</th>
+                                                        <th class="text-end">Actions</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {% for website in websites %}
+                                                    <tr>
+                                                        <td>{{ website.unique_code }}</td>
+                                                        <td>{{ website.domain }}</td>
+                                                        <td>{{ website.status }}</td>
+                                                        <td>
+                                                            <div class="hstack gap-2 justify-content-end">
+                                                                <div class="hstack gap-2 justify-content-end">
+                                                                    <a href="javascript:void(0);" data-id="{{ website.unique_code }}" class="edit-website avatar-text avatar-md text-danger" data-bs-toggle="modal" data-bs-target="#editWebsite" title="Edit Website"><i class="feather feather-edit"></i></a>
+                                                                    <a href="javascript:void(0);" data-id="{{ website.unique_code }}" class="delete-website avatar-text avatar-md text-danger" data-bs-toggle="modal" data-bs-target="#deleteWebsite" title="Delete Website"><i class="feather feather-trash"></i></a>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="addWebsite" tabindex="-1">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <form method="post" action="{% url 'AdminAddNewWebsite' %}">
+                            {% csrf_token %}
+                            <div class="modal-header">
+                                <h5 class="modal-title">Add New Website</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="form-group mb-4">
+                                    <label class="form-label" for="domain">Domain</label>
+                                    <input type="text" class="form-control" id="domain" name="domain" placeholder="Enter Domain" required>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+                                <button type="submit" class="btn btn-primary">Save Details</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="editWebsite" tabindex="-1">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <form method="post" action="{% url 'AdminUpdateWebsite' %}">
+                            {% csrf_token %}
+                            <div class="modal-header">
+                                <h5 class="modal-title">Edit Website Details</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="form-group mb-4">
+                                    <label class="form-label" for="ddomain">Domain</label>
+                                    <input type="hidden" id="wid" name="wid" value="">
+                                    <input type="text" class="form-control" id="ddomain" name="domain" placeholder="Enter Domain" required>
+                                </div>
+                                <div class="form-group mb-4">
+                                    <label class="form-label" for="dstatus">Status</label>
+                                    <select type="text" class="form-control" id="dstatus" name="status" required>
+                                        <option value="" hidden> -- Select Status -- </option>
+                                        <option value="Active">Active</option>
+                                        <option value="Inactive">Inactive</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+                                <button type="submit" class="btn btn-primary">Save Details</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade show" id="deleteWebsite" tabindex="-1" role="dialog" aria-modal="true">
+                <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <form method="post" action="{% url 'AdminDeleteWebsite' %}">
+                            {% csrf_token %}
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="modalTitleId">Delete Website</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="notes-box">
+                                    <div class="notes-content">
+                                        <div class="row">
+                                            <div class="col-md-12 mb-3">
+                                                <div class="note-title">
+                                                    <h3>Are your sure you want to delete selected website?</h3>
+                                                    <input type="hidden" id="dwid" name="dwid" value="">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-success" data-bs-dismiss="modal">No</button>
+                                <button type="submit" class="btn btn-danger">Yes Delete</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+{% endblock content %}

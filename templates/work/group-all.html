@@ -1,0 +1,111 @@
+{% extends "layouts/work.html" %}
+{% load static %}
+{% block title %}Elastic | Work | All Groups{% endblock %}
+{% block content %}
+            <div class="page-header">
+                <div class="page-header-left d-flex align-items-center">
+                    <div class="page-header-title">
+                        <h5 class="m-b-10">Welcome {{ user.first_name }}</h5>
+                    </div>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'AdminDashboard' %}">Dashboard</a></li>
+                        <li class="breadcrumb-item">All Groups</li>
+                    </ul>
+                </div>
+                <div class="page-header-right ms-auto">
+                    <div class="page-header-right-items">
+                        <div class="d-flex d-md-none">
+                            <a href="javascript:void(0)" class="page-header-right-close-toggle">
+                                <i class="feather-arrow-left me-2"></i>
+                                <span>Back</span>
+                            </a>
+                        </div>
+                        <div class="d-flex align-items-center gap-2 page-header-right-items-wrapper">
+                            <a href="{% url 'AdminCreateNewGroup' %}" class="btn btn-primary">
+                                <i class="feather-plus me-2"></i>
+                                <span>Create Group</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="main-content">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card stretch stretch-full">
+                            <div class="card-body p-0">
+                                <div class="card stretch stretch-full">
+                                    <div class="card-body p-0">
+                                        <div class="table-responsive">
+                                            <table class="table table-hover" id="allGroups">
+                                                <thead>
+                                                    <tr>
+                                                        <th>ID</th>
+                                                        <th>Name</th>
+                                                        <th>Filter</th>
+                                                        <th>Status</th>
+                                                        <th class="text-end">Actions</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {% for group in groups %}
+                                                    <tr>
+                                                        <td>{{ group.unique_code }}</td>
+                                                        <td>{{ group.name }}</td>
+                                                        <td>{{ group.filter }}</td>
+                                                        <td>{{ group.status }}</td>
+                                                        <td>
+                                                            <div class="hstack gap-2 justify-content-end">
+                                                                <div class="hstack gap-2 justify-content-end">
+                                                                    <a href="{% url 'AdminViewGroupDetails' group.unique_code %}" class="avatar-text avatar-md text-danger" title="View Group Details"><i class="feather feather-eye"></i></a>
+                                                                    <a href="{% url 'AdminGroupCompanies' group.unique_code %}" class="avatar-text avatar-md text-danger" title="Companies in Group"><i class="feather feather-star"></i></a>
+                                                                    <a href="javascript:void(0);" data-id="{{ group.unique_code }}" class="delete-group avatar-text avatar-md text-danger" data-bs-toggle="modal" data-bs-target="#deleteGroup" title="Delete Group"><i class="feather feather-trash"></i></a>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade show" id="deleteGroup" tabindex="-1" role="dialog" aria-modal="true">
+                <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <form method="post" action="{% url 'AdminDeleteGroup' %}">
+                            {% csrf_token %}
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="modalTitleId">Delete Group</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="notes-box">
+                                    <div class="notes-content">
+                                        <div class="row">
+                                            <div class="col-md-12 mb-3">
+                                                <div class="note-title">
+                                                    <h3>Are your sure you want to delete selected group?</h3>
+                                                    <input type="hidden" id="dgid" name="dgid" value="">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-success" data-bs-dismiss="modal">No</button>
+                                <button type="submit" class="btn btn-danger">Yes Delete</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+{% endblock content %}

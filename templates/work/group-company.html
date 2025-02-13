@@ -1,0 +1,145 @@
+{% extends "layouts/work.html" %}
+{% load static %}
+{% block title %}Elastic | Work | All Companies in Group{% endblock %}
+{% block content %}
+            <div class="page-header">
+                <div class="page-header-left d-flex align-items-center">
+                    <div class="page-header-title">
+                        <h5 class="m-b-10">Welcome {{ user.first_name }}</h5>
+                    </div>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'AdminDashboard' %}">Dashboard</a></li>
+                        <li class="breadcrumb-item"><a href="{% url 'AdminAllGroups' %}">All Groups</a></li>
+                        <li class="breadcrumb-item">All Companies in Group</li>
+                    </ul>
+                </div>
+                <div class="page-header-right ms-auto">
+                    <div class="page-header-right-items">
+                        <div class="d-flex d-md-none">
+                            <a href="javascript:void(0)" class="page-header-right-close-toggle">
+                                <i class="feather-arrow-left me-2"></i>
+                                <span>Back</span>
+                            </a>
+                        </div>
+                        <div class="d-flex align-items-center gap-2 page-header-right-items-wrapper">
+                            <a href="javascript:void(0);" data-id="{{ group.unique_code }}" class="add-group-company btn btn-primary" data-bs-toggle="modal" data-bs-target="#addGroupCompany" title="Add Company in Group">
+                                <i class="feather-plus me-2"></i>
+                                <span>Add Company</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="main-content">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card stretch stretch-full">
+                            <div class="card-body p-0">
+                                <div class="table-responsive">
+                                    <table class="table table-hover" id="allCompanies">
+                                        <thead>
+                                            <tr>
+                                                <th>Company ID</th>
+                                                <th>Name</th>
+                                                <th>Email</th>
+                                                <th>Mobile Number</th>
+                                                <th>Users</th>
+                                                <th>Status</th>
+                                                <th class="text-end">Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for company in companies %}
+                                            <tr class="single-item">
+                                                <td>{{ company.unique_code }}</td>
+                                                <td>
+                                                    <a href="{% url 'AdminEditCompanyDetails' company.unique_code %}" class="hstack gap-3">
+                                                        <div><span class="text-truncate-1-line">{{ company.name }}</span></div>
+                                                    </a>
+                                                </td>
+                                                <td><a href="mailto:{{ company.email }}">{{ company.email }}</a></td>
+                                                <td><a href="tel:+1{{ company.mobile }}">+1{{ company.mobile }}</a></td>
+                                                <td>{{ company.users }}</td>
+                                                <td>{{ company.status }}</td>
+                                                <td>
+                                                    <div class="hstack gap-2 justify-content-end">
+                                                        <div class="hstack gap-2 justify-content-end">
+                                                            <a href="{% url 'AdminViewCompanyLeads' company.unique_code %}" class="avatar-text avatar-md" title="View Company Leads"><i class="feather feather-paperclip"></i></a>
+                                                            <a href="{% url 'AdminAllCompanyUser' company.unique_code %}" class="avatar-text avatar-md" title="All Company Users"><i class="feather feather-users"></i></a>
+                                                            <a href="javascript:void(0);" data-id="{{ group.unique_code }}" class="delete-company-from-group avatar-text avatar-md text-danger" data-bs-toggle="modal" data-bs-target="#deleteCompanyFromGoup" title="Delete Company Records"><i class="feather feather-trash"></i></a>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="addGroupCompany" tabindex="-1" role="dialog" aria-modal="true">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <form method="post" action="{% url 'AdminCompanyInGroup' %}">
+                            {% csrf_token %}
+                            <div class="modal-header">
+                                <h5 class="modal-title">Add Company in Group</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="form-group mb-0">
+                                    <label for="company" class="form-label">Company</label>
+                                    <input type="hidden" id="gid" name="gid" value="">
+                                    <select class="company form-control form-select" id="company" name="company" data-placeholder="Select Company(s)" multiple>
+                                        {% for company in allcompanies %}
+                                        <option value="{{ company.unique_code }}">{{ company.name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancer</button>
+                                <button type="submit" class="btn btn-primary">Save Details</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade show" id="deleteCompanyFromGoup" tabindex="-1" role="dialog" aria-modal="true">
+                <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modalTitleId">Delete Company From Group</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="notes-box">
+                                <div class="notes-content">
+                                    <form method="post" action="{% url 'AdminDeleteCompanyFromGroup' %}">
+                                        {% csrf_token %}
+                                        <div class="row">
+                                            <div class="col-md-12 mb-3">
+                                                <div class="note-title">
+                                                    <h3>Are your sure you want to delet selected company from the group?</h3>
+                                                    <input type="hidden" id="gid" name="gid" value="{{ group.unique_code }}">
+                                                    <input type="hidden" id="gcid" name="gcid" value="">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-success" data-dismiss="modal">No</button>
+                            <button id="btn-n-add" class="btn btn-danger">Yes Delete</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+{% endblock content %}

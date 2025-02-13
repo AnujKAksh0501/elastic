@@ -1,0 +1,199 @@
+{% extends "layouts/work.html" %}
+{% load static %}
+{% block title %}Elastic | Work | All Leads{% endblock %}
+{% block content %}
+            <div class="page-header mb-3">
+                <div class="page-header-left d-flex align-items-center">
+                    <div class="page-header-title">
+                        <h5 class="m-b-10">Welcome {{ user.first_name }}</h5>
+                    </div>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'AdminDashboard' %}">Dashboard</a></li>
+                        <li class="breadcrumb-item">All Leads</li>
+                    </ul>
+                </div>
+                <div class="page-header-right ms-auto">
+                    <div class="page-header-right-items">
+                        <div class="d-flex d-md-none">
+                            <a href="javascript:void(0)" class="page-header-right-close-toggle">
+                                <i class="feather-arrow-left me-2"></i>
+                                <span>Back</span>
+                            </a>
+                        </div>
+                        <div class="d-flex align-items-center gap-2 page-header-right-items-wrapper">
+                            <a href="{% url 'AdminCreateLead' %}" class="btn btn-primary">
+                                <i class="feather-plus me-2"></i>
+                                <span>Create Lead</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="main-content">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card stretch stretch-full">
+                            <div class="card-body p-0">
+                                <div class="card stretch stretch-full">
+                                    <div class="card-body p-0">
+                                        <div class="table-responsive px-2">
+                                            <table class="table table-hover" id="allLeads">
+                                                <thead>
+                                                    <tr>
+                                                        <th>ID</th>
+                                                        <th>Title</th>
+                                                        <th>Phone</th>
+                                                        <th>Received At</th>
+                                                        <th>Premium</th>
+                                                        <th class="text-end">Actions</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {% for lead in leads %}
+                                                    <tr>
+                                                        <td>{{ lead.unique_code }}</td>
+                                                        <td>{{ lead.phone }} {{ lead.make }} {{ lead.model }} {{ lead.year }} {% if lead.size != 'Not Sure' %} {{ lead.size }} {% endif %} {{ lead.part }}</td>
+                                                        <td>+1 {{ lead.phone }}</td>
+                                                        <td>{{ lead.date }} at {{ lead.time }}</td>
+                                                        <td>
+                                                            {% if lead.is_premium == 'Yes' %}
+                                                            <span class="badge bg-soft-success text-success">Premium</span>
+                                                            {% else %}
+                                                            <span class="badge bg-soft-success text-success">Non Premium</span>
+                                                            {% endif %}
+                                                        </td>
+                                                        <td>
+                                                            <div class="hstack gap-2 justify-content-end">
+                                                                <div class="hstack gap-2 justify-content-end">
+                                                                    <a href="javascript:void(0);" data-id="{{ lead.unique_code }}" class="send-lead avatar-text avatar-md" data-bs-toggle="modal" data-bs-target="#sendLead" title="Send Email"><i class="feather feather-mail"></i></a>
+                                                                    <a href="javascript:void(0);" data-id="{{ lead.unique_code }}" class="sent-leads avatar-text avatar-md" data-bs-toggle="modal" data-bs-target="#sentLeads" title="Mail Transactions"><i class="feather feather-wifi"></i></a>
+                                                                    <a href="{% url 'AdminViewLeadDetails' lead.unique_code %}" class="avatar-text avatar-md text-danger" title="View Lead Details"><i class="feather feather-eye"></i></a>
+                                                                    <a href="javascript:void(0);" data-id="{{ lead.unique_code }}" class="delete-lead avatar-text avatar-md text-danger" data-bs-toggle="modal" data-bs-target="#deleteLead" title="Delete Lead"><i class="feather feather-trash"></i></a>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    {% endfor %}
+                                                </tbody>
+                                            </table>
+
+                                            {% if leads %}
+                                            <!-- Pagination -->
+                                            <div class="pagination">
+                                                {% if leads.has_previous %}
+                                                    <a class="btn btn-info" href="?page=1">First</a>
+                                                    <a class="btn btn-secondary" href="?page={{ leads.previous_page_number }}">Previous</a>
+                                                {% endif %}
+
+                                                <span class="btn btn-primary">{{ leads.number }}</span>
+
+                                                {% if leads.has_next %}
+                                                    <a class="btn btn-secondary" href="?page={{ leads.next_page_number }}">Next</a>
+                                                    <a class="btn btn-info" href="?page={{ leads.paginator.num_pages }}">Last</a>
+                                                {% endif %}
+                                            </div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="sendLead" tabindex="-1">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <form method="post" action="{% url 'AdminSingleLeadEmail' %}">
+                            {% csrf_token %}
+                            <div class="modal-header">
+                                <h5 class="modal-title">Send Email</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="form-group mb-4">
+                                    <label class="form-label" for="email">Email</label>
+                                    <input type="hidden" id="lid" name="lid" value="">
+                                    <select class="form-select form-control" id="email" name="email" data-select2-selector="icon" multiple>
+                                        <option value="" hidden> -- Select Email(s) -- </option>
+                                        {% for account in accounts %}
+                                        <option value="{{ account.email }}">{{ account.email }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+                                <button type="submit" class="btn btn-primary">Send</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="sentLeads" tabindex="-1">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Mail Transactions</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Date</th>
+                                            <th>Time</th>
+                                            <th>Phone</th>
+                                            <th>Emails</th>
+                                            <th>Group</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="transactions">
+                                        
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade show" id="deleteLead" tabindex="-1" role="dialog" aria-modal="true">
+                {% csrf_token %}
+                <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <form method="post" action="{% url 'AdminDeleteLead' %}">
+                            {% csrf_token %}
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="modalTitleId">Delete Lead</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="notes-box">
+                                    <div class="notes-content">
+                                        <div class="row">
+                                            <div class="col-md-12 mb-3">
+                                                <div class="note-title">
+                                                    <h3>Are your sure you want to delete selected lead?</h3>
+                                                    <input type="hidden" id="dlid" name="dlid" value="">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-success" data-bs-dismiss="modal">No</button>
+                                <button type="submit" class="btn btn-danger">Yes Delete</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+{% endblock content %}

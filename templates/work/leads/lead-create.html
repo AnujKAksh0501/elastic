@@ -1,0 +1,192 @@
+{% extends "layouts/work.html" %}
+{% load static %}
+{% block title %}Elastic | Work | Create New Lead{% endblock %}
+{% block content %}
+            <div class="page-header">
+                <div class="page-header-left d-flex align-items-center">
+                    <div class="page-header-title">
+                        <h5 class="m-b-10">Welcome {{ user.first_name }}</h5>
+                    </div>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'AdminDashboard' %}">Dashboard</a></li>
+                        <li class="breadcrumb-item"><a href="{% url 'AdminAllLeads' %}">All Leads</a></li>
+                        <li class="breadcrumb-item">Create New Lead</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="main-content">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card stretch stretch-full">
+                            <form method="post" action="{% url 'AdminCreateLead' %}">
+                                {% csrf_token %}
+                                <div class="card-body lead-status">
+                                    <div class="mb-5 d-flex align-items-center justify-content-between">
+                                        <h5 class="fw-bold mb-0 me-4">
+                                            <span class="d-block mb-2">Lead Status :</span>
+                                            <span class="fs-12 fw-normal text-muted text-truncate-1-line">Typically refers to adding a new potential customer or sales prospect</span>
+                                        </h5>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-6 mb-4">
+                                            <label class="form-label" for="status">Status <sup class="text-danger"><b>*</b></sup></label>
+                                            <select class="form-control" id="status" name="status" data-select2-selector="status" required>
+                                                <option value="New" data-bg="bg-primary">New</option>
+                                                <option value="Quoted" data-bg="bg-warning">Quoted</option>
+                                                <option value="Converted" data-bg="bg-teal">Converted</option>
+                                                <option value="Lost" data-bg="bg-danger">Lost</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-lg-6 mb-4">
+                                            <label class="form-label" for="source">Source of the lead <sup class="text-danger"><b>*</b></sup></label>
+                                            <select type="text" class="form-control" id="source" name="source" required>
+                                                <option value="" hidden> -- Select Source -- </option>
+                                                {% for website in websites %}
+                                                <option value="{{ website.domain }}">{{ website.domain }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-6 mb-4">
+                                            <label class="form-label" for="type">Type <sup class="text-danger"><b>*</b></sup></label>
+                                            <select class="form-control" id="type" name="type" data-select2-selector="status" required>
+                                                <option value="Inbound" data-bg="bg-primary">Inbound</option>
+                                                <option value="Outbound" data-bg="bg-warning">Outbound</option>
+                                                <option value="Email" data-bg="bg-teal">Email</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-lg-6 mb-4">
+                                            <label class="form-label" for="premium">Premium <sup class="text-danger"><b>*</b></sup></label>
+                                            <select class="form-control" id="premium" name="premium" data-select2-selector="premium" required>
+                                                <option value="Yes">Yes</option>
+                                                <option value="No" selected>No</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr class="mt-0">
+                                <div class="card-body general-info">
+                                    <div class="mb-5 d-flex align-items-center justify-content-between">
+                                        <h5 class="fw-bold mb-0 me-4">
+                                            <span class="d-block mb-2">Lead Info :</span>
+                                            <span class="fs-12 fw-normal text-muted text-truncate-1-line">General information about your lead</span>
+                                        </h5>
+                                    </div>
+                                    <div class="row mb-4 align-items-center">
+                                        <div class="col-lg-4">
+                                            <label for="name" class="fw-semibold">Name <sup class="text-danger"><b>*</b></sup>: </label>
+                                        </div>
+                                        <div class="col-lg-8">
+                                            <div class="input-group">
+                                                <div class="input-group-text"><i class="feather-user"></i></div>
+                                                <input type="text" class="form-control" id="name" name="name" placeholder="Name" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-4 align-items-center">
+                                        <div class="col-lg-4">
+                                            <label for="email" class="fw-semibold">Email <sup class="text-danger"><b>*</b></sup>: </label>
+                                        </div>
+                                        <div class="col-lg-8">
+                                            <div class="input-group">
+                                                <div class="input-group-text"><i class="feather-mail"></i></div>
+                                                <input type="email" class="form-control" id="email" name="email" placeholder="Email" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-4 align-items-center">
+                                        <div class="col-lg-4">
+                                            <label for="mobile" class="fw-semibold">Phone <sup class="text-danger"><b>*</b></sup>: </label>
+                                        </div>
+                                        <div class="col-lg-8">
+                                            <div class="input-group">
+                                                <div class="input-group-text"><i class="feather-phone"></i></div>
+                                                <input type="text" class="form-control" id="mobile" name="mobile" minlength="10" maxlength="10" placeholder="Phone" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-4 align-items-center">
+                                        <div class="col-lg-4">
+                                            <label for="part" class="fw-semibold">Part <sup class="text-danger"><b>*</b></sup>: </label>
+                                        </div>
+                                        <div class="col-lg-8">
+                                            <div class="input-group">
+                                                <div class="input-group-text"><i class="feather-box"></i></div>
+                                                <select type="text" class="form-control" id="part" name="part" placeholder="Part" required>
+                                                    <option value="" hidden> -- Select Part -- </option>
+                                                    <option value="Engine">Engine</option>
+                                                    <option value="Transmission">Transmission</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-4 align-items-center">
+                                        <div class="col-lg-4">
+                                            <label for="make" class="fw-semibold">Make <sup class="text-danger"><b>*</b></sup>: </label>
+                                        </div>
+                                        <div class="col-lg-8">
+                                            <div class="input-group">
+                                                <div class="input-group-text"><i class="feather-briefcase"></i></div>
+                                                <select type="text" class="form-control" id="make" name="make" placeholder="Make" required>
+                                                    <option value="" hidden> -- Select Make -- </option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-4 align-items-center">
+                                        <div class="col-lg-4">
+                                            <label for="model" class="fw-semibold">Model <sup class="text-danger"><b>*</b></sup>: </label>
+                                        </div>
+                                        <div class="col-lg-8">
+                                            <div class="input-group">
+                                                <div class="input-group-text"><i class="feather-file"></i></div>
+                                                <select type="text" class="form-control" id="model" name="model" placeholder="Model" required>
+                                                    <option value="" hidden> -- Select Model -- </option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-4 align-items-center">
+                                        <div class="col-lg-4">
+                                            <label for="year" class="fw-semibold">Year <sup class="text-danger"><b>*</b></sup>: </label>
+                                        </div>
+                                        <div class="col-lg-8">
+                                            <div class="input-group">
+                                                <div class="input-group-text"><i class="feather-calendar"></i></div>
+                                                <select type="text" class="form-control" id="year" name="year" placeholder="Year" required>
+                                                    <option value="" hidden> -- Select Year -- </option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-4 align-items-center">
+                                        <div class="col-lg-4">
+                                            <label for="size" class="fw-semibold">Size <sup class="text-danger"><b>*</b></sup>: </label>
+                                        </div>
+                                        <div class="col-lg-8">
+                                            <div class="input-group">
+                                                <div class="input-group-text"><i class="feather-navigation"></i></div>
+                                                <select type="text" class="form-control" id="size" name="size" placeholder="Size" required>
+                                                    <option value="" hidden> -- Select Size -- </option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-4">
+                                        <div class="col-lg-9"></div>
+                                        <div class="col-lg-3 text-end">
+                                            <button type="submit" class="btn btn-primary w-100">
+                                                <i class="feather-save me-2"></i>
+                                                <span>Save Details</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+{% endblock content %}

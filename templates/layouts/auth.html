@@ -1,0 +1,292 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token }}">    
+    <meta name="description" content="{% block description %}{% endblock %}">
+    <meta name="keywords" content="{% block keywords %}{% endblock %}">
+    <meta name="author" content="">
+    <title>{% block title %}{% endblock %}</title>
+    
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'back/images/favicon.png' %}">
+    
+    <link rel="stylesheet" type="text/css" href="{% static 'back/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'back/vendors/css/vendors.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'back/css/theme.min.css' %}">
+</head>
+<body>
+    {% block content %}
+                
+    {% endblock %}
+
+    <div class="theme-customizer">
+        <div class="customizer-handle">
+            <a href="javascript:void(0);" class="cutomizer-open-trigger bg-primary">
+                <i class="feather-settings"></i>
+            </a>
+        </div>
+        <div class="customizer-sidebar-wrapper">
+            <div class="customizer-sidebar-header px-4 ht-80 border-bottom d-flex align-items-center justify-content-between">
+                <h5 class="mb-0">Theme Settings</h5>
+                <a href="javascript:void(0);" class="cutomizer-close-trigger d-flex">
+                    <i class="feather-x"></i>
+                </a>
+            </div>
+            <div class="customizer-sidebar-body position-relative p-4" data-scrollbar-target="#psScrollbarInit">
+                <div class="position-relative px-3 pb-3 pt-4 mt-3 mb-5 border border-gray-2 theme-options-set">
+                    <label class="py-1 px-2 fs-8 fw-bold text-uppercase text-muted text-spacing-2 bg-white border border-gray-2 position-absolute rounded-2 options-label" style="top: -12px">Skins</label>
+                    <div class="row g-2 theme-options-items app-skin" id="appSkinList">
+                        <div class="col-6 text-center position-relative single-option light-button active">
+                            <input type="radio" class="btn-check" id="app-skin-light" name="app-skin" value="1" data-app-skin="app-skin-light">
+                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-skin-light">Light</label>
+                        </div>
+                        <div class="col-6 text-center position-relative single-option dark-button">
+                            <input type="radio" class="btn-check" id="app-skin-dark" name="app-skin" value="2" data-app-skin="app-skin-dark">
+                            <label class="py-2 fs-9 fw-bold text-dark text-uppercase text-spacing-1 border border-gray-2 w-100 h-100 c-pointer position-relative options-label" for="app-skin-dark">Dark</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="customizer-sidebar-footer px-4 ht-60 border-top d-flex align-items-center gap-2">
+                <div class="flex-fill w-50">
+                    <a href="javascript:void(0);" class="btn btn-danger" data-style="reset-all-common-style">Reset</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="{% static 'back/vendors/js/vendors.min.js' %}"></script>
+    <script src="{% static 'back/vendors/js/lslstrength.min.js' %}"></script>
+    <script src="{% static 'back/js/common-init.min.js' %}"></script>
+    <script src="{% static 'back/js/theme-customizer-init.min.js' %}"></script>
+    {% comment %} <script src="{% static 'form-instance.js' %}"></script> {% endcomment %}
+    <script>
+        document.addEventListener("DOMContentLoaded", function(event) {
+            function OTPInput() {
+                const inputs = document.querySelectorAll("#otp > *[id]");
+                for (let i = 0; i < inputs.length; i++) {
+                    inputs[i].addEventListener("keydown", function(event) {
+                        if (event.key === "Backspace") {
+                            inputs[i].value = "";
+                            if (i !== 0) inputs[i - 1].focus();
+                        } else {
+                            if (i === inputs.length - 1 && inputs[i].value !== "") {
+                                return true;
+                            } else if (event.keyCode > 47 && event.keyCode < 58) {
+                                inputs[i].value = event.key;
+                                if (i !== inputs.length - 1) inputs[i + 1].focus();
+                                event.preventDefault();
+                            } else if (event.keyCode > 64 && event.keyCode < 91) {
+                                inputs[i].value = String.fromCharCode(event.keyCode);
+                                if (i !== inputs.length - 1) inputs[i + 1].focus();
+                                event.preventDefault();
+                            }
+                        }
+                    });
+                }
+            }
+            OTPInput();
+        });
+    </script>
+    <script>
+        $(document).ready(function(){
+            $.getJSON("https://api.ipify.org/?format=json", function(e) {
+                var uip = e.ip;
+                $('#uip').val();
+                $('#uip').val(uip);
+                var csrftoken = $("[name=csrfmiddlewaretoken]").val();
+                let timeSpent = 0;
+
+                // Increase time spent every second
+                let timer = setInterval(function () {
+                    timeSpent++;
+                }, 1000);
+                
+                if(uip != null){
+                    $.ajax({
+                        url: "/api/visitor-capture",
+                        type: 'POST',
+                        dataType: 'json',
+                        data: {
+                            source: window.location.hostname,
+                            ipAddress: uip,
+                            userAgent: navigator.userAgent,
+                            platform: osDetails.os,
+                            platformVersion: osDetails.osVersion,
+                            browser: getBrowser(),
+                            language: navigator.language,
+                            screenResolution: `${window.screen.width}x${window.screen.height}`,
+                            device: deviceDetails.device,
+                            deviceModel: deviceDetails.model,
+                            deviceBrand: deviceDetails.brand,
+                            csrfmiddlewaretoken: csrftoken
+                        },
+                        success: function(response){
+                            let visitorID = localStorage.getItem("visitorID");
+
+                            // Generate a visitor ID if not already set
+                            if (!visitorID) {
+                                localStorage.setItem("visitorID", response.visitor.visitor_id);
+                            }
+
+                            $.ajax({
+                                url: "/api/visit-capture",
+                                type: 'POST',
+                                dataType: 'json',
+                                data: {
+                                    visitor_id: localStorage.getItem("visitorID"),
+                                    source: window.location.hostname,
+                                    visitedURL: window.location.href,
+                                    csrfmiddlewaretoken: csrftoken
+                                },
+                                success: function(response){
+                                    let visitID = localStorage.getItem("visitID");
+            
+                                    // Generate a visit ID if not already set
+                                    if (!visitID) {
+                                        localStorage.setItem("visitID", response.visit.visit_id);
+                                    }
+                                },
+                                error: function(response, errorThrown){
+                                    console.log(errorThrown);
+                                },
+                            });
+                        },
+                        error: function(response, errorThrown){
+                            console.log(errorThrown);
+                        },
+                    });
+                }
+
+                // When the user leaves the page, send the data to an API (optional)
+                $(window).on("beforeunload", function () {
+                    clearInterval(timer); // Stop the timer
+
+                    // Send timeSpent to the server (optional)
+                    $.ajax({
+                        url: "/api/update-visit",
+                        type: 'POST',
+                        dataType: 'json',
+                        data: {
+                            visit_id: localStorage.getItem("visitID"),
+                            visitedURL: window.location.href,
+                            visit_time_spent: timeSpent,
+                            csrfmiddlewaretoken: csrftoken
+                        },
+                        success: function(response){
+                            
+                        },
+                        error: function(response, errorThrown){
+                            console.log(errorThrown);
+                        },
+                    });
+                });
+            });
+
+            // Function to detect browser
+            function getBrowser() {
+                const ua = navigator.userAgent;
+                if (ua.includes("Firefox")) return "Firefox";
+                if (ua.includes("Edg")) return "Microsoft Edge";
+                if (ua.includes("MSIE")) return "Internet Explorer";
+                if (ua.includes("Chrome") && !ua.includes("Edg")) return "Chrome";
+                if (ua.includes("Safari") && !ua.includes("Chrome")) return "Safari";
+                if (ua.includes("Opera") || ua.includes("OPR")) return "Opera";
+                if (navigator.brave.isBrave()) return "Brave";
+                return "Unknown";
+            }
+
+            // Function to detect OS details
+            function getOsDetails(){
+                const ua = navigator.userAgent;
+                let os = "Unknown OS";
+                let osVersion = "Unknown OS Version";
+
+                if (/Windows NT 10.0/i.test(ua)) {
+                    os = "Windows 10";
+                } else if (/Windows NT 6.1/i.test(ua)) {
+                    os = "Windows 7";
+                } else if (/Android/i.test(ua)) {
+                    os = "Android";
+                } else if (/iPhone|iPad|iPod/i.test(ua)) {
+                    os = "iOS";
+                } else if (/Mac OS X/i.test(ua)) {
+                    os = "macOS";
+                } else if (/Linux/i.test(ua)) {
+                    os = "Linux";
+                }
+
+                if (/Windows NT 10.0/i.test(ua)) {
+                    osVersion = "Windows 10";
+                } else if (/Windows NT 6.1/i.test(ua)) {
+                    osVersion = "Windows 7";
+                } else if (/Android (\d+(\.\d+)?)/i.test(ua)) {
+                    osVersion = `Android ${RegExp.$1}`;
+                } else if (/iPhone OS (\d+_\d+)/i.test(ua)) {
+                    osVersion = `iOS ${RegExp.$1.replace('_', '.')}`;
+                } else if (/Mac OS X (\d+_\d+_\d+)/i.test(ua)) {
+                    osVersion = `macOS ${RegExp.$1.replace(/_/g, '.')}`;
+                }
+
+                return { os, osVersion };
+            }
+
+            // Function to detect device, model & brand (limited accuracy)
+            function getDeviceDetails() {
+                const ua = navigator.userAgent;
+                let device = 'Unknown';
+                let model = "Unknown Device";
+                let brand = "Unknown Brand";
+
+                if (/Mobi|Android|iPhone|iPad|iPod/i.test(ua)) {
+                    device = "Mobile/Tablet";
+                } else if (/Windows|Mac|Linux/i.test(ua)) {
+                    device = "PC";
+                }
+
+                if (ua.includes("iPhone")) {
+                    model = "iPhone";
+                    brand = "Apple";
+                } else if (ua.includes("iPad")) {
+                    model = "iPad";
+                    brand = "Apple";
+                } else if (ua.includes("Android")) {
+                    let match = ua.match(/\(([^)]+)\)/);
+                    if (match) {
+                        let details = match[1].split(";");
+                        if (details.length > 2) {
+                            model = details[2].trim();
+                            brand = details[1].trim();
+                        } else {
+                            model = "Android Device";
+                        }
+                    }
+                }
+
+                return { device, model, brand };
+            }
+
+            // Collect user details
+            const deviceDetails = getDeviceDetails();
+            const osDetails = getOsDetails();
+
+            const userDetails = {
+                source: window.location.hostname,
+                ipAddress: '',
+                userAgent: navigator.userAgent,
+                platform: osDetails.os,
+                platformVersion: osDetails.osVersion,
+                browser: getBrowser(),
+                language: navigator.language,
+                screenResolution: `${window.screen.width}x${window.screen.height}`,
+                device: deviceDetails.device,
+                deviceModel: deviceDetails.model,
+                deviceBrand: deviceDetails.brand
+            };
+        })
+    </script>
+</body>
+</html>
