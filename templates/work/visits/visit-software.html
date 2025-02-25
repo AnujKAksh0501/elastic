@@ -1,0 +1,763 @@
+{% extends "layouts/work.html" %}
+{% load static %}
+{% block title %}Elastic | Work | Visit Software{% endblock %}
+{% block content %}
+            <div class="page-header">
+                <div class="page-header-left d-flex align-items-center">
+                    <div class="page-header-title">
+                        <h5 class="m-b-10">Welcome {{ user.first_name }}</h5>
+                    </div>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'AdminDashboard' %}">Dashboard</a></li>
+                        <li class="breadcrumb-item">Visit Software</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="main-content">
+                <div class="card stretch stretch-full">
+                    <div class="card-body p-0">
+                        <div class="card stretch stretch-full">
+                            <div class="card-body custom-card-action">
+                                <ul class="nav mb-4 gap-4 sales-pipeline-tabs" role="tablist">
+                                    <li class="nav-item" role="presentation">
+                                        <a href="javascript:void(0);" class="nav-link text-start active" data-bs-toggle="tab" data-bs-target="#today" role="tab">
+                                            <span class="amount fs-18 fw-bold my-1 d-block">Today</span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <a href="javascript:void(0);" class="nav-link text-start" data-bs-toggle="tab" data-bs-target="#yesterday" role="tab">
+                                            <span class="amount fs-18 fw-bold my-1 d-block">Yesterday</span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <a href="javascript:void(0);" class="nav-link text-start" data-bs-toggle="tab" data-bs-target="#curweek" role="tab">
+                                            <span class="amount fs-18 fw-bold my-1 d-block">Current Week</span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <a href="javascript:void(0);" class="nav-link text-start" data-bs-toggle="tab" data-bs-target="#prevweek" role="tab">
+                                            <span class="amount fs-18 fw-bold my-1 d-block">Previous Week</span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <a href="javascript:void(0);" class="nav-link text-start" data-bs-toggle="tab" data-bs-target="#curmonth" role="tab">
+                                            <span class="amount fs-18 fw-bold my-1 d-block">Current Month</span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <a href="javascript:void(0);" class="nav-link text-start" data-bs-toggle="tab" data-bs-target="#prevmonth" role="tab">
+                                            <span class="amount fs-18 fw-bold my-1 d-block">Previous Month</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                                <div class="tab-content">
+                                    <div class="tab-pane fade show active" id="today" role="tabpanel">
+                                        {% if result.today.platform or result.today.platform_version or result.today.browser or result.today.browser_engine or result.today.browser_configuration %}
+                                        <div class="row mb-4">
+                                            <div class="col-xl-6 col-lg-6 col-md-12 col-xs-12 col-sm-12">
+                                                <h5 class="m-b-10">Operating System</h5>
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>OS</th>
+                                                                <th class="text-end">Count</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% for tmp in result.today.platform %}
+                                                            <tr>
+                                                                <td>{{ tmp.platform }}</td>
+                                                                <td class="text-end">{{ tmp.count }}</td>
+                                                            </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-6 col-lg-6 col-md-12 col-xs-12 col-sm-12">
+                                                <h5 class="m-b-10">OS Version</h5>
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>OS Version</th>
+                                                                <th class="text-end">Count</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% for tmp in result.today.platform_version %}
+                                                            <tr>
+                                                                <td>{{ tmp.platform_version }}</td>
+                                                                <td class="text-end">{{ tmp.count }}</td>
+                                                            </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-4">
+                                            <div class="col-xl-6 col-lg-6 col-md-12 col-xs-12 col-sm-12">
+                                                <h5 class="m-b-10">Browser</h5>
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Browser</th>
+                                                                <th class="text-end">Count</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% for tmp in result.today.browser %}
+                                                            <tr>
+                                                                <td>{{ tmp.browser }}</td>
+                                                                <td class="text-end">{{ tmp.count }}</td>
+                                                            </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-6 col-lg-6 col-md-12 col-xs-12 col-sm-12">
+                                                <h5 class="m-b-10">Browser Engine</h5>
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Browser Engine</th>
+                                                                <th class="text-end">Count</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% for tmp in result.today.browser_engine %}
+                                                            <tr>
+                                                                <td>{{ tmp.browser_engine }}</td>
+                                                                <td class="text-end">{{ tmp.count }}</td>
+                                                            </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-4">
+                                            <div class="col-xl-6 col-lg-6 col-md-12 col-xs-12 col-sm-12">
+                                                <h5 class="m-b-10">Browser Configuration</h5>
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Browser Configuration</th>
+                                                                <th class="text-end">Count</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% for tmp in result.today.browser_configuration %}
+                                                            <tr>
+                                                                <td>{{ tmp.browser_configuration }}</td>
+                                                                <td class="text-end">{{ tmp.count }}</td>
+                                                            </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {% else %}
+                                        <h4><b>No data found.</b></h4>
+                                        {% endif %}
+                                    </div>
+                                    <div class="tab-pane fade" id="yesterday" role="tabpanel">
+                                        {% if result.yesterday.platform or result.yesterday.platform_version or result.yesterday.browser or result.yesterday.browser_engine or result.yesterday.browser_configuration %}
+                                        <div class="row mb-4">
+                                            <div class="col-xl-6 col-lg-6 col-md-12 col-xs-12 col-sm-12">
+                                                <h5 class="m-b-10">Operating System</h5>
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>OS</th>
+                                                                <th class="text-end">Count</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% for tmp in result.yesterday.platform %}
+                                                            <tr>
+                                                                <td>{{ tmp.platform }}</td>
+                                                                <td class="text-end">{{ tmp.count }}</td>
+                                                            </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-6 col-lg-6 col-md-12 col-xs-12 col-sm-12">
+                                                <h5 class="m-b-10">OS Version</h5>
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>OS Version</th>
+                                                                <th class="text-end">Count</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% for tmp in result.yesterday.platform_version %}
+                                                            <tr>
+                                                                <td>{{ tmp.platform_version }}</td>
+                                                                <td class="text-end">{{ tmp.count }}</td>
+                                                            </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-4">
+                                            <div class="col-xl-6 col-lg-6 col-md-12 col-xs-12 col-sm-12">
+                                                <h5 class="m-b-10">Browser</h5>
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Browser</th>
+                                                                <th class="text-end">Count</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% for tmp in result.yesterday.browser %}
+                                                            <tr>
+                                                                <td>{{ tmp.browser }}</td>
+                                                                <td class="text-end">{{ tmp.count }}</td>
+                                                            </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-6 col-lg-6 col-md-12 col-xs-12 col-sm-12">
+                                                <h5 class="m-b-10">Browser Engine</h5>
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Browser Engine</th>
+                                                                <th class="text-end">Count</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% for tmp in result.yesterday.browser_engine %}
+                                                            <tr>
+                                                                <td>{{ tmp.browser_engine }}</td>
+                                                                <td class="text-end">{{ tmp.count }}</td>
+                                                            </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-4">
+                                            <div class="col-xl-6 col-lg-6 col-md-12 col-xs-12 col-sm-12">
+                                                <h5 class="m-b-10">Browser Configuration</h5>
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Browser Configuration</th>
+                                                                <th class="text-end">Count</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% for tmp in result.yesterday.browser_configuration %}
+                                                            <tr>
+                                                                <td>{{ tmp.browser_configuration }}</td>
+                                                                <td class="text-end">{{ tmp.count }}</td>
+                                                            </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {% else %}
+                                        <h4><b>No data found.</b></h4>
+                                        {% endif %}
+                                    </div>
+                                    <div class="tab-pane fade" id="curweek" role="tabpanel">
+                                        {% if result.current_week.platform or result.current_week.platform_version or result.current_week.browser or result.current_week.browser_engine or result.current_week.browser_configuration %}
+                                        <div class="row mb-4">
+                                            <div class="col-xl-6 col-lg-6 col-md-12 col-xs-12 col-sm-12">
+                                                <h5 class="m-b-10">Operating System</h5>
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>OS</th>
+                                                                <th class="text-end">Count</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% for tmp in result.current_week.platform %}
+                                                            <tr>
+                                                                <td>{{ tmp.platform }}</td>
+                                                                <td class="text-end">{{ tmp.count }}</td>
+                                                            </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-6 col-lg-6 col-md-12 col-xs-12 col-sm-12">
+                                                <h5 class="m-b-10">OS Version</h5>
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>OS Version</th>
+                                                                <th class="text-end">Count</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% for tmp in result.current_week.platform_version %}
+                                                            <tr>
+                                                                <td>{{ tmp.platform_version }}</td>
+                                                                <td class="text-end">{{ tmp.count }}</td>
+                                                            </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-4">
+                                            <div class="col-xl-6 col-lg-6 col-md-12 col-xs-12 col-sm-12">
+                                                <h5 class="m-b-10">Browser</h5>
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Browser</th>
+                                                                <th class="text-end">Count</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% for tmp in result.current_week.browser %}
+                                                            <tr>
+                                                                <td>{{ tmp.browser }}</td>
+                                                                <td class="text-end">{{ tmp.count }}</td>
+                                                            </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-6 col-lg-6 col-md-12 col-xs-12 col-sm-12">
+                                                <h5 class="m-b-10">Browser Engine</h5>
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Browser Engine</th>
+                                                                <th class="text-end">Count</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% for tmp in result.current_week.browser_engine %}
+                                                            <tr>
+                                                                <td>{{ tmp.browser_engine }}</td>
+                                                                <td class="text-end">{{ tmp.count }}</td>
+                                                            </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-4">
+                                            <div class="col-xl-6 col-lg-6 col-md-12 col-xs-12 col-sm-12">
+                                                <h5 class="m-b-10">Browser Configuration</h5>
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Browser Configuration</th>
+                                                                <th class="text-end">Count</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% for tmp in result.current_week.browser_configuration %}
+                                                            <tr>
+                                                                <td>{{ tmp.browser_configuration }}</td>
+                                                                <td class="text-end">{{ tmp.count }}</td>
+                                                            </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {% else %}
+                                        <h4><b>No data found.</b></h4>
+                                        {% endif %}
+                                    </div>
+                                    <div class="tab-pane fade" id="prevweek" role="tabpanel">
+                                        {% if result.previous_week.platform or result.previous_week.platform_version or result.previous_week.browser or result.previous_week.browser_engine or result.previous_week.browser_configuration %}
+                                        <div class="row mb-4">
+                                            <div class="col-xl-6 col-lg-6 col-md-12 col-xs-12 col-sm-12">
+                                                <h5 class="m-b-10">Operating System</h5>
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>OS</th>
+                                                                <th class="text-end">Count</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% for tmp in result.previous_week.platform %}
+                                                            <tr>
+                                                                <td>{{ tmp.platform }}</td>
+                                                                <td class="text-end">{{ tmp.count }}</td>
+                                                            </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-6 col-lg-6 col-md-12 col-xs-12 col-sm-12">
+                                                <h5 class="m-b-10">OS Version</h5>
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>OS Version</th>
+                                                                <th class="text-end">Count</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% for tmp in result.previous_week.platform_version %}
+                                                            <tr>
+                                                                <td>{{ tmp.platform_version }}</td>
+                                                                <td class="text-end">{{ tmp.count }}</td>
+                                                            </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-4">
+                                            <div class="col-xl-6 col-lg-6 col-md-12 col-xs-12 col-sm-12">
+                                                <h5 class="m-b-10">Browser</h5>
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Browser</th>
+                                                                <th class="text-end">Count</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% for tmp in result.previous_week.browser %}
+                                                            <tr>
+                                                                <td>{{ tmp.browser }}</td>
+                                                                <td class="text-end">{{ tmp.count }}</td>
+                                                            </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-6 col-lg-6 col-md-12 col-xs-12 col-sm-12">
+                                                <h5 class="m-b-10">Browser Engine</h5>
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Browser Engine</th>
+                                                                <th class="text-end">Count</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% for tmp in result.previous_week.browser_engine %}
+                                                            <tr>
+                                                                <td>{{ tmp.browser_engine }}</td>
+                                                                <td class="text-end">{{ tmp.count }}</td>
+                                                            </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-4">
+                                            <div class="col-xl-6 col-lg-6 col-md-12 col-xs-12 col-sm-12">
+                                                <h5 class="m-b-10">Browser Configuration</h5>
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Browser Configuration</th>
+                                                                <th class="text-end">Count</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% for tmp in result.previous_week.browser_configuration %}
+                                                            <tr>
+                                                                <td>{{ tmp.browser_configuration }}</td>
+                                                                <td class="text-end">{{ tmp.count }}</td>
+                                                            </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {% else %}
+                                        <h4><b>No data found.</b></h4>
+                                        {% endif %}
+                                    </div>
+                                    <div class="tab-pane fade" id="curmonth" role="tabpanel">
+                                        {% if result.current_month.platform or result.current_month.platform_version or result.current_month.browser or result.current_month.browser_engine or result.current_month.browser_configuration %}
+                                        <div class="row mb-4">
+                                            <div class="col-xl-6 col-lg-6 col-md-12 col-xs-12 col-sm-12">
+                                                <h5 class="m-b-10">Operating System</h5>
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>OS</th>
+                                                                <th class="text-end">Count</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% for tmp in result.current_month.platform %}
+                                                            <tr>
+                                                                <td>{{ tmp.platform }}</td>
+                                                                <td class="text-end">{{ tmp.count }}</td>
+                                                            </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-6 col-lg-6 col-md-12 col-xs-12 col-sm-12">
+                                                <h5 class="m-b-10">OS Version</h5>
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>OS Version</th>
+                                                                <th class="text-end">Count</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% for tmp in result.current_month.platform_version %}
+                                                            <tr>
+                                                                <td>{{ tmp.platform_version }}</td>
+                                                                <td class="text-end">{{ tmp.count }}</td>
+                                                            </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-4">
+                                            <div class="col-xl-6 col-lg-6 col-md-12 col-xs-12 col-sm-12">
+                                                <h5 class="m-b-10">Browser</h5>
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Browser</th>
+                                                                <th class="text-end">Count</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% for tmp in result.current_month.browser %}
+                                                            <tr>
+                                                                <td>{{ tmp.browser }}</td>
+                                                                <td class="text-end">{{ tmp.count }}</td>
+                                                            </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-6 col-lg-6 col-md-12 col-xs-12 col-sm-12">
+                                                <h5 class="m-b-10">Browser Engine</h5>
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Browser Engine</th>
+                                                                <th class="text-end">Count</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% for tmp in result.current_month.browser_engine %}
+                                                            <tr>
+                                                                <td>{{ tmp.browser_engine }}</td>
+                                                                <td class="text-end">{{ tmp.count }}</td>
+                                                            </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-4">
+                                            <div class="col-xl-6 col-lg-6 col-md-12 col-xs-12 col-sm-12">
+                                                <h5 class="m-b-10">Browser Configuration</h5>
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Browser Configuration</th>
+                                                                <th class="text-end">Count</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% for tmp in result.current_month.browser_configuration %}
+                                                            <tr>
+                                                                <td>{{ tmp.browser_configuration }}</td>
+                                                                <td class="text-end">{{ tmp.count }}</td>
+                                                            </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {% else %}
+                                        <h4><b>No data found.</b></h4>
+                                        {% endif %}
+                                    </div>
+                                    <div class="tab-pane fade" id="prevmonth" role="tabpanel">
+                                        {% if result.previous_month.platform or result.previous_month.platform_version or result.previous_month.browser or result.previous_month.browser_engine or result.previous_month.browser_configuration %}
+                                        <div class="row mb-4">
+                                            <div class="col-xl-6 col-lg-6 col-md-12 col-xs-12 col-sm-12">
+                                                <h5 class="m-b-10">Operating System</h5>
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>OS</th>
+                                                                <th class="text-end">Count</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% for tmp in result.previous_month.platform %}
+                                                            <tr>
+                                                                <td>{{ tmp.platform }}</td>
+                                                                <td class="text-end">{{ tmp.count }}</td>
+                                                            </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-6 col-lg-6 col-md-12 col-xs-12 col-sm-12">
+                                                <h5 class="m-b-10">OS Version</h5>
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>OS Version</th>
+                                                                <th class="text-end">Count</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% for tmp in result.previous_month.platform_version %}
+                                                            <tr>
+                                                                <td>{{ tmp.platform_version }}</td>
+                                                                <td class="text-end">{{ tmp.count }}</td>
+                                                            </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-4">
+                                            <div class="col-xl-6 col-lg-6 col-md-12 col-xs-12 col-sm-12">
+                                                <h5 class="m-b-10">Browser</h5>
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Browser</th>
+                                                                <th class="text-end">Count</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% for tmp in result.previous_month.browser %}
+                                                            <tr>
+                                                                <td>{{ tmp.browser }}</td>
+                                                                <td class="text-end">{{ tmp.count }}</td>
+                                                            </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-6 col-lg-6 col-md-12 col-xs-12 col-sm-12">
+                                                <h5 class="m-b-10">Browser Engine</h5>
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Browser Engine</th>
+                                                                <th class="text-end">Count</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% for tmp in result.previous_month.browser_engine %}
+                                                            <tr>
+                                                                <td>{{ tmp.browser_engine }}</td>
+                                                                <td class="text-end">{{ tmp.count }}</td>
+                                                            </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-4">
+                                            <div class="col-xl-6 col-lg-6 col-md-12 col-xs-12 col-sm-12">
+                                                <h5 class="m-b-10">Browser Configuration</h5>
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Browser Configuration</th>
+                                                                <th class="text-end">Count</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% for tmp in result.previous_month.browser_configuration %}
+                                                            <tr>
+                                                                <td>{{ tmp.browser_configuration }}</td>
+                                                                <td class="text-end">{{ tmp.count }}</td>
+                                                            </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {% else %}
+                                        <h4><b>No data found.</b></h4>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+{% endblock content %}

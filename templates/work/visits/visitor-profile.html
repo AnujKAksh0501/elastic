@@ -1,0 +1,133 @@
+{% extends "layouts/work.html" %}
+{% load static %}
+{% block title %}Elastic | Work | Visitor Profile{% endblock %}
+{% block content %}
+            <div class="page-header mb-3">
+                <div class="page-header-left d-flex align-items-center">
+                    <div class="page-header-title">
+                        <h5 class="m-b-10">Welcome {{ user.first_name }}</h5>
+                    </div>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'AdminDashboard' %}">Dashboard</a></li>
+                        <li class="breadcrumb-item"><a href="{% url 'AdminAllVisitors' %}">All Visitors</a></li>
+                        <li class="breadcrumb-item">Visitor Profile</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="main-content">
+                <div class="row">
+                    <div class="col-xxl-4 col-xl-4 col-lg-4 col-md-12 col-xs-12 col-sm-12 mb-3">
+                        <div class="card stretch stretch-full">
+                            <div class="card-body">
+                                <div class="mb-4 text-center">
+                                    <div class="wd-150 ht-150 mx-auto mb-3 position-relative">
+                                        <div class="avatar-image wd-150 ht-150 border border-5 border-gray-3">
+                                            <img src="{% static 'back/images/avatar.png' %}" alt="" class="img-fluid">
+                                        </div>
+                                    </div>
+                                    <div class="mb-4">
+                                        <a href="javascript:void(0);" class="fs-14 d-block"><strong>ID: </strong>{{ visitor.visitor_id }}</a>
+                                        <a href="javascript:void(0);" class="fs-12 d-block"><strong>IP: </strong>{{ visitor.visitor_ip }}</a>
+                                    </div>
+                                </div>
+                                <ul class="list-unstyled mb-4">
+                                    <li class="hstack justify-content-between mb-2">
+                                        <span class="text-muted fw-medium hstack gap-3">Location</span>
+                                        <a href="javascript:void(0);" class="float-end"><i class="{{ visitor.flag }}"></i> {{ visitor.city }}, {{ visitor.country }}, {{ visitor.country_code }}</a>
+                                    </li>
+                                    <li class="hstack justify-content-between mb-2">
+                                        <span class="text-muted fw-medium hstack gap-3">Continent</span>
+                                        <a href="javascript:void(0);" class="float-end">{{ visitor.continent }}, {{ visitor.continent_code }}</a>
+                                    </li>
+                                    <li class="hstack justify-content-between mb-2">
+                                        <span class="text-muted fw-medium hstack gap-3">Region</span>
+                                        <a href="javascript:void(0);" class="float-end">{{ visitor.region }}, {{ visitor.region_code }}</a>
+                                    </li>
+                                    <li class="hstack justify-content-between mb-2">
+                                        <span class="text-muted fw-medium hstack gap-3">Latitude &amp; Longitude</span>
+                                        <a href="javascript:void(0);" class="float-end">{{ visitor.lat }}, {{ visitor.lon }}</a>
+                                    </li>
+                                    <li class="hstack justify-content-between mb-2">
+                                        <span class="text-muted fw-medium hstack gap-3">Currency</span>
+                                        <a href="javascript:void(0);" class="float-end">{{ visitor.currency }}</a>
+                                    </li>
+                                    <li class="hstack justify-content-between mb-2">
+                                        <span class="text-muted fw-medium hstack gap-3">Timezone</span>
+                                        <a href="javascript:void(0);" class="float-end">{{ visitor.timezone }}</a>
+                                    </li>
+                                    <li class="hstack justify-content-between mb-2">
+                                        <span class="text-muted fw-medium hstack gap-3">Dialing Code</span>
+                                        <a href="javascript:void(0);" class="float-end">{{ visitor.dialing_code }}</a>
+                                    </li>
+                                    <li class="hstack justify-content-between mb-2">
+                                        <span class="text-muted fw-medium hstack gap-3">Device</span>
+                                        <a href="javascript:void(0);" class="float-end">{{ visitor.device }}</a>
+                                    </li>
+                                    <li class="hstack justify-content-between mb-2">
+                                        <span class="text-muted fw-medium hstack gap-3">Device Brand</span>
+                                        <a href="javascript:void(0);" class="float-end">{{ visitor.device_brand }}</a>
+                                    </li>
+                                    <li class="hstack justify-content-between mb-2">
+                                        <span class="text-muted fw-medium hstack gap-3">Device Model</span>
+                                        <a href="javascript:void(0);" class="float-end">{{ visitor.device_model }}</a>
+                                    </li>
+                                    <li class="hstack justify-content-between mb-2">
+                                        <span class="text-muted fw-medium hstack gap-3">Device Screen Resolution</span>
+                                        <a href="javascript:void(0);" class="float-end">{{ visitor.device_screen }}</a>
+                                    </li>
+                                    <li class="hstack justify-content-between mb-2">
+                                        <span class="text-muted fw-medium hstack gap-3">Browser</span>
+                                        <a href="javascript:void(0);" class="float-end"><i class="{{ visitor.browser_icon }}"></i> {{ visitor.browser }}</a>
+                                    </li>
+                                    <li class="hstack justify-content-between mb-2">
+                                        <span class="text-muted fw-medium hstack gap-3">Language</span>
+                                        <a href="javascript:void(0);" class="float-end">{{ visitor.language }}</a>
+                                    </li>
+                                    <li class="hstack justify-content-between mb-2">
+                                        <span class="text-muted fw-medium hstack gap-3">OS</span>
+                                        <a href="javascript:void(0);" class="float-end"><i class="{{ visitor.os_icon }}"></i> {{ visitor.platform }}, {{ visitor.platform_version }}</a>
+                                    </li>
+                                    <li class="hstack justify-content-between mb-2">
+                                        <span class="text-muted fw-medium hstack gap-3">Source</span>
+                                        <a href="javascript:void(0);" class="float-end">{{ visitor.source }}</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xxl-8 col-xl-8 col-lg-8 col-md-12 col-xs-12 col-sm-12 mb-3">
+                        <div class="card stretch stretch-full">
+                            <div class="card-body">
+                                <div class="about-section mb-5">
+                                    <div class="mb-4 d-flex align-items-center justify-content-between">
+                                        <h5 class="fw-bold mb-0">All Visits:</h5>
+                                    </div>
+                                    
+                                    <div class="table-responsive">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">Visited URL</th>
+                                                    <th scope="col">Time Spent</th>
+                                                    <th scope="col">Date Time</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for visit in visits %}
+                                                <tr>
+                                                    <td>{{ visit.visited_url }}</td>
+                                                    <td>{{ visit.visit_time_spent }}s</td>
+                                                    <td>{{ visit.created_at }}</td>
+                                                </tr>
+                                                {% endfor %}
+                                            <tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+{% endblock content %}

@@ -27,7 +27,7 @@ from django.db.models import Q
 @api_view(['GET'])
 @permission_classes([AllowAny])
 def Welcome(request):
-    return render(request, 'index.html')
+    return redirect('SignIn')
 
 @api_view(['GET', 'POST'])
 @permission_classes([AllowAny])
@@ -78,7 +78,7 @@ def SignUp(request):
                     message = EmailMultiAlternatives(
                         subject = 'Account Verification OTP',
                         body = plain_message,
-                        from_email = None,
+                        from_email = "apptexit@apptexit.com",
                         to = [request.POST['email']]
                     )
                     message.attach_alternative(html_mail, 'text/html')
@@ -353,6 +353,7 @@ def AdminDashboard(request):
 @permission_classes([IsAuthenticated])
 def AdminAllCompanies(request):
     rawdata = Company.objects.all()
+    groups = Group.objects.all()
     
     companies = []
     for company in rawdata:
@@ -377,6 +378,7 @@ def AdminAllCompanies(request):
             })
 
     context = {
+        'groups': groups,
         'companies': companies
     }
     return render(request, 'work/company/all.html', context)
@@ -613,6 +615,24 @@ def AdminUpdateCompanyDetails(request):
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
+def AdminChangeCompanyGroup(request):
+    if not request.POST['company']:
+        messages.error(request, "Company ID is required.")
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+    
+    company = Company.objects.filter(unique_code=request.POST['company']).first()
+    if not company:
+        messages.error(request, "Company not found.")
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+    
+    company.group = request.POST['group']
+    company.save()
+
+    messages.success(request, "Company group updated successfully!")
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
 def AdminDeleteCompany(request):
     try:
         if not request.POST['dcid']:
@@ -769,6 +789,60 @@ def AdminDeleteCompanyUser(request):
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
+def AdminViewCompanyEmails(request):
+    companies = Company.objects.all()
+
+    try:
+        emails = Companyemail.objects.order_by('id')
+    except Companyemail.DoesNotExist:
+        emails = None
+
+    paginator = Paginator(emails, 15)  # Show 15 leads per page
+    page_number = request.GET.get('page')  # Get page number from URL
+    page_obj = paginator.get_page(page_number)  # Get the correct page
+    
+    context = {
+        'companies': companies,
+        'emails': page_obj
+    }
+    return render(request, 'work/company/emails.html', context)
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def AdminAddNewCompanyEmail(request):
+    if request.method == 'POST':
+        try:
+            email = Companyemail(
+                company_id = request.POST['company'],
+                email = request.POST['email'],
+            )
+            email.save()
+
+            messages.success(request, "New company email has been added successfully!")
+        except KeyError as e:
+            messages.error(request, f"Missing parameter: {str(e)}")
+        except Exception as e:
+            messages.error(request, f"An error occurred: {str(e)}")
+
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def AdminDeleteCompanyEmail(request):
+    try:
+        email = Companyemail.objects.filter(id=request.POST['deid']).first()
+        email.delete()
+
+        messages.success(request, "Company email deleted successfully!")
+    except KeyError as e:
+        messages.error(request, f"Missing parameter: {str(e)}")
+    except Exception as e:
+        messages.error(request, f"An error occurred: {str(e)}")
+
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def AdminAllGroups(request):
     companies = Company.objects.all()
     groups = Group.objects.all()
@@ -841,6 +915,13 @@ def AdminUpdateGroupDetails(request):
 
         # Update group details if provided
         if 'name' in request.POST and request.POST['name'] and request.POST['name'] != group.name:
+            finds = Company.objects.filter(group=group.name).get()
+
+            if finds:
+                for com in finds:
+                    com.group = request.POST['name']
+                Company.objects.bulk_update(finds, ['group'])
+
             group.name = request.POST['name']
         if 'filter' in request.POST and request.POST['filter'] and request.POST['filter'] != group.filter:
             group.filter = request.POST['filter']
@@ -850,22 +931,17 @@ def AdminUpdateGroupDetails(request):
             group.status = request.POST['status']
 
         # Update rules
-        rules = []
-        fields = request.POST.getlist('field[]')
-        conditions = request.POST.getlist('condition[]')
-        values = request.POST.getlist('value[]')
-        logics = request.POST.getlist('logic[]')
-        count = len(fields)
+        fields = request.POST.getlist('field[]', [])
+        conditions = request.POST.getlist('condition[]', [])
+        values = request.POST.getlist('value[]', [])
+        logics = request.POST.getlist('logic[]', [])
 
-        for i in range(count):
-            rules.append({
-                'field': fields[i],
-                'condition': conditions[i],
-                'value': values[i],
-                'logic': logics[i],
-            })
-
-        group.rule = rules
+        if fields and conditions and values and logics:
+            rules = [
+                {'field': fields[i], 'condition': conditions[i], 'value': values[i], 'logic': logics[i]}
+                for i in range(len(fields))
+            ]
+            group.rule = rules
         group.save()
 
         messages.success(request, "Group details updated successfully!")

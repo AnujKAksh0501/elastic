@@ -60,7 +60,7 @@
                                             <select type="text" class="form-control" id="source" name="source" required>
                                                 <option value="" hidden> -- Select Source -- </option>
                                                 {% for website in websites %}
-                                                <option value="{{ website.domain }}">{{ website.domain }}</option>
+                                                <option value="{{ website.domain }}" {% if lead.source == website.domain %} selected {% endif %}>{{ website.domain }}</option>
                                                 {% endfor %}
                                             </select>
                                         </div>
@@ -76,7 +76,7 @@
                                         </div>
                                         <div class="col-lg-6 mb-4">
                                             <label class="form-label" for="premium">Premium <sup class="text-danger"><b>*</b></sup></label>
-                                            <select class="form-control" id="premium" name="premium" data-select2-selector="premium" required>
+                                            <select class="form-control" id="premium" name="is_premium" data-select2-selector="premium" required>
                                                 <option value="Yes" {% if lead.is_premium == 'Yes' %} selected {% endif %}>Yes</option>
                                                 <option value="No" {% if lead.is_premium == 'No' %} selected {% endif %}>No</option>
                                             </select>
@@ -120,7 +120,7 @@
                                         <div class="col-lg-8">
                                             <div class="input-group">
                                                 <div class="input-group-text"><i class="feather-phone"></i></div>
-                                                <input type="text" class="form-control" id="mobile" name="mobile" minlength="10" maxlength="10" placeholder="Phone" value="{{ lead.phone }}" required>
+                                                <input type="text" class="form-control" id="mobile" name="phone" minlength="10" maxlength="10" placeholder="Phone" value="{{ lead.phone }}" required>
                                             </div>
                                         </div>
                                     </div>

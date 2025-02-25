@@ -1,0 +1,889 @@
+{% extends "layouts/work.html" %}
+{% load static %}
+{% block title %}Elastic | Work | Visit Locations{% endblock %}
+{% block content %}
+            <div class="page-header mb-4">
+                <div class="page-header-left d-flex align-items-center">
+                    <div class="page-header-title">
+                        <h5 class="m-b-10">Welcome {{ user.first_name }}</h5>
+                    </div>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'AdminDashboard' %}">Dashboard</a></li>
+                        <li class="breadcrumb-item">Visit Locations</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="main-content">
+                <div class="card stretch stretch-full">
+                    <div class="card-body p-0">
+                        <div class="card stretch stretch-full">
+                            <div class="card-body custom-card-action">
+                                <ul class="nav mb-4 gap-4 sales-pipeline-tabs" role="tablist">
+                                    <li class="nav-item" role="presentation">
+                                        <a href="javascript:void(0);" class="nav-link text-start active" data-bs-toggle="tab" data-bs-target="#today" role="tab">
+                                            <span class="amount fs-18 fw-bold my-1 d-block">Today</span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <a href="javascript:void(0);" class="nav-link text-start" data-bs-toggle="tab" data-bs-target="#yesterday" role="tab">
+                                            <span class="amount fs-18 fw-bold my-1 d-block">Yesterday</span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <a href="javascript:void(0);" class="nav-link text-start" data-bs-toggle="tab" data-bs-target="#curweek" role="tab">
+                                            <span class="amount fs-18 fw-bold my-1 d-block">Current Week</span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <a href="javascript:void(0);" class="nav-link text-start" data-bs-toggle="tab" data-bs-target="#prevweek" role="tab">
+                                            <span class="amount fs-18 fw-bold my-1 d-block">Previous Week</span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <a href="javascript:void(0);" class="nav-link text-start" data-bs-toggle="tab" data-bs-target="#curmonth" role="tab">
+                                            <span class="amount fs-18 fw-bold my-1 d-block">Current Month</span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <a href="javascript:void(0);" class="nav-link text-start" data-bs-toggle="tab" data-bs-target="#prevmonth" role="tab">
+                                            <span class="amount fs-18 fw-bold my-1 d-block">Previous Month</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                                <div class="tab-content">
+                                    <div class="tab-pane fade show active" id="today" role="tabpanel">
+                                        {% if result.today.continent or result.today.country or result.today.region or result.today.city or result.today.timezone or result.today.language %}
+                                        <div class="row mb-4">
+                                            <div class="col-xl-6 col-lg-6 col-md-12 col-xs-12 col-sm-12">
+                                                <h5 class="m-b-10">Continent</h5>
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Continent</th>
+                                                                <th class="text-end">Count</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% for tmp in result.today.continent %}
+                                                            <tr>
+                                                                <td>{{ tmp.continent }}</td>
+                                                                <td class="text-end">{{ tmp.count }}</td>
+                                                            </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-6 col-lg-6 col-md-12 col-xs-12 col-sm-12">
+                                                <h5 class="m-b-10">Country</h5>
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Country</th>
+                                                                <th class="text-end">Count</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% for tmp in result.today.country %}
+                                                            <tr>
+                                                                <td>{{ tmp.country }}</td>
+                                                                <td class="text-end">{{ tmp.count }}</td>
+                                                            </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-4">
+                                            <div class="col-xl-6 col-lg-6 col-md-12 col-xs-12 col-sm-12">
+                                                <h5 class="m-b-10">Region</h5>
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Region</th>
+                                                                <th class="text-end">Count</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% for tmp in result.today.region %}
+                                                            <tr>
+                                                                <td>{{ tmp.region }}</td>
+                                                                <td class="text-end">{{ tmp.count }}</td>
+                                                            </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-6 col-lg-6 col-md-12 col-xs-12 col-sm-12">
+                                                <h5 class="m-b-10">City</h5>
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>City</th>
+                                                                <th class="text-end">Count</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% for tmp in result.today.city %}
+                                                            <tr>
+                                                                <td>{{ tmp.city }}</td>
+                                                                <td class="text-end">{{ tmp.count }}</td>
+                                                            </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col-xl-6 col-lg-6 col-md-12 col-xs-12 col-sm-12">
+                                                <h5 class="m-b-10">Timezone</h5>
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Timezone</th>
+                                                                <th class="text-end">Count</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% for tmp in result.today.timezone %}
+                                                            <tr>
+                                                                <td>{{ tmp.timezone }}</td>
+                                                                <td class="text-end">{{ tmp.count }}</td>
+                                                            </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-6 col-lg-6 col-md-12 col-xs-12 col-sm-12">
+                                                <h5 class="m-b-10">Browser Language</h5>
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Browser Language</th>
+                                                                <th class="text-end">Count</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% for tmp in result.today.language %}
+                                                            <tr>
+                                                                <td>{{ tmp.language }}</td>
+                                                                <td class="text-end">{{ tmp.count }}</td>
+                                                            </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {% else %}
+                                        <h4><b>No data found.</b></h4>
+                                        {% endif %}
+                                    </div>
+                                    <div class="tab-pane fade" id="yesterday" role="tabpanel">
+                                        {% if result.yesterday.continent or result.yesterday.country or result.yesterday.region or result.yesterday.city or result.yesterday.timezone or result.yesterday.language %}
+                                        <div class="row mb-4">
+                                            <div class="col-xl-6 col-lg-6 col-md-12 col-xs-12 col-sm-12">
+                                                <h5 class="m-b-10">Continent</h5>
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Continent</th>
+                                                                <th class="text-end">Count</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% for tmp in result.yesterday.continent %}
+                                                            <tr>
+                                                                <td>{{ tmp.continent }}</td>
+                                                                <td class="text-end">{{ tmp.count }}</td>
+                                                            </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-6 col-lg-6 col-md-12 col-xs-12 col-sm-12">
+                                                <h5 class="m-b-10">Country</h5>
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Country</th>
+                                                                <th class="text-end">Count</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% for tmp in result.yesterday.country %}
+                                                            <tr>
+                                                                <td>{{ tmp.country }}</td>
+                                                                <td class="text-end">{{ tmp.count }}</td>
+                                                            </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-4">
+                                            <div class="col-xl-6 col-lg-6 col-md-12 col-xs-12 col-sm-12">
+                                                <h5 class="m-b-10">Region</h5>
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Region</th>
+                                                                <th class="text-end">Count</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% for tmp in result.yesterday.region %}
+                                                            <tr>
+                                                                <td>{{ tmp.region }}</td>
+                                                                <td class="text-end">{{ tmp.count }}</td>
+                                                            </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-6 col-lg-6 col-md-12 col-xs-12 col-sm-12">
+                                                <h5 class="m-b-10">City</h5>
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>City</th>
+                                                                <th class="text-end">Count</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% for tmp in result.yesterday.city %}
+                                                            <tr>
+                                                                <td>{{ tmp.city }}</td>
+                                                                <td class="text-end">{{ tmp.count }}</td>
+                                                            </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col-xl-6 col-lg-6 col-md-12 col-xs-12 col-sm-12">
+                                                <h5 class="m-b-10">Timezone</h5>
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Timezone</th>
+                                                                <th class="text-end">Count</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% for tmp in result.yesterday.timezone %}
+                                                            <tr>
+                                                                <td>{{ tmp.timezone }}</td>
+                                                                <td class="text-end">{{ tmp.count }}</td>
+                                                            </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-6 col-lg-6 col-md-12 col-xs-12 col-sm-12">
+                                                <h5 class="m-b-10">Browser Language</h5>
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Browser Language</th>
+                                                                <th class="text-end">Count</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% for tmp in result.yesterday.language %}
+                                                            <tr>
+                                                                <td>{{ tmp.language }}</td>
+                                                                <td class="text-end">{{ tmp.count }}</td>
+                                                            </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {% else %}
+                                        <h4><b>No data found.</b></h4>
+                                        {% endif %}
+                                    </div>
+                                    <div class="tab-pane fade" id="curweek" role="tabpanel">
+                                        {% if result.current_week.continent or result.current_week.country or result.current_week.region or result.current_week.city or result.current_week.timezone or result.current_week.language %}
+                                        <div class="row mb-4">
+                                            <div class="col-xl-6 col-lg-6 col-md-12 col-xs-12 col-sm-12">
+                                                <h5 class="m-b-10">Continent</h5>
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Continent</th>
+                                                                <th class="text-end">Count</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% for tmp in result.current_week.continent %}
+                                                            <tr>
+                                                                <td>{{ tmp.continent }}</td>
+                                                                <td class="text-end">{{ tmp.count }}</td>
+                                                            </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-6 col-lg-6 col-md-12 col-xs-12 col-sm-12">
+                                                <h5 class="m-b-10">Country</h5>
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Country</th>
+                                                                <th class="text-end">Count</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% for tmp in result.current_week.country %}
+                                                            <tr>
+                                                                <td>{{ tmp.country }}</td>
+                                                                <td class="text-end">{{ tmp.count }}</td>
+                                                            </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-4">
+                                            <div class="col-xl-6 col-lg-6 col-md-12 col-xs-12 col-sm-12">
+                                                <h5 class="m-b-10">Region</h5>
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Region</th>
+                                                                <th class="text-end">Count</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% for tmp in result.current_week.region %}
+                                                            <tr>
+                                                                <td>{{ tmp.region }}</td>
+                                                                <td class="text-end">{{ tmp.count }}</td>
+                                                            </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-6 col-lg-6 col-md-12 col-xs-12 col-sm-12">
+                                                <h5 class="m-b-10">City</h5>
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>City</th>
+                                                                <th class="text-end">Count</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% for tmp in result.current_week.city %}
+                                                            <tr>
+                                                                <td>{{ tmp.city }}</td>
+                                                                <td class="text-end">{{ tmp.count }}</td>
+                                                            </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col-xl-6 col-lg-6 col-md-12 col-xs-12 col-sm-12">
+                                                <h5 class="m-b-10">Timezone</h5>
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Timezone</th>
+                                                                <th class="text-end">Count</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% for tmp in result.current_week.timezone %}
+                                                            <tr>
+                                                                <td>{{ tmp.timezone }}</td>
+                                                                <td class="text-end">{{ tmp.count }}</td>
+                                                            </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-6 col-lg-6 col-md-12 col-xs-12 col-sm-12">
+                                                <h5 class="m-b-10">Browser Language</h5>
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Browser Language</th>
+                                                                <th class="text-end">Count</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% for tmp in result.current_week.language %}
+                                                            <tr>
+                                                                <td>{{ tmp.language }}</td>
+                                                                <td class="text-end">{{ tmp.count }}</td>
+                                                            </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {% else %}
+                                        <h4><b>No data found.</b></h4>
+                                        {% endif %}
+                                    </div>
+                                    <div class="tab-pane fade" id="prevweek" role="tabpanel">
+                                        {% if result.previous_week.continent or result.previous_week.country or result.previous_week.region or result.previous_week.city or result.previous_week.timezone or result.previous_week.language %}
+                                        <div class="row mb-4">
+                                            <div class="col-xl-6 col-lg-6 col-md-12 col-xs-12 col-sm-12">
+                                                <h5 class="m-b-10">Continent</h5>
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Continent</th>
+                                                                <th class="text-end">Count</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% for tmp in result.previous_week.continent %}
+                                                            <tr>
+                                                                <td>{{ tmp.continent }}</td>
+                                                                <td class="text-end">{{ tmp.count }}</td>
+                                                            </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-6 col-lg-6 col-md-12 col-xs-12 col-sm-12">
+                                                <h5 class="m-b-10">Country</h5>
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Country</th>
+                                                                <th class="text-end">Count</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% for tmp in result.previous_week.country %}
+                                                            <tr>
+                                                                <td>{{ tmp.country }}</td>
+                                                                <td class="text-end">{{ tmp.count }}</td>
+                                                            </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-4">
+                                            <div class="col-xl-6 col-lg-6 col-md-12 col-xs-12 col-sm-12">
+                                                <h5 class="m-b-10">Region</h5>
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Region</th>
+                                                                <th class="text-end">Count</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% for tmp in result.previous_week.region %}
+                                                            <tr>
+                                                                <td>{{ tmp.region }}</td>
+                                                                <td class="text-end">{{ tmp.count }}</td>
+                                                            </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-6 col-lg-6 col-md-12 col-xs-12 col-sm-12">
+                                                <h5 class="m-b-10">City</h5>
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>City</th>
+                                                                <th class="text-end">Count</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% for tmp in result.previous_week.city %}
+                                                            <tr>
+                                                                <td>{{ tmp.city }}</td>
+                                                                <td class="text-end">{{ tmp.count }}</td>
+                                                            </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col-xl-6 col-lg-6 col-md-12 col-xs-12 col-sm-12">
+                                                <h5 class="m-b-10">Timezone</h5>
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Timezone</th>
+                                                                <th class="text-end">Count</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% for tmp in result.previous_week.timezone %}
+                                                            <tr>
+                                                                <td>{{ tmp.timezone }}</td>
+                                                                <td class="text-end">{{ tmp.count }}</td>
+                                                            </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-6 col-lg-6 col-md-12 col-xs-12 col-sm-12">
+                                                <h5 class="m-b-10">Browser Language</h5>
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Browser Language</th>
+                                                                <th class="text-end">Count</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% for tmp in result.previous_week.language %}
+                                                            <tr>
+                                                                <td>{{ tmp.language }}</td>
+                                                                <td class="text-end">{{ tmp.count }}</td>
+                                                            </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {% else %}
+                                        <h4><b>No data found.</b></h4>
+                                        {% endif %}
+                                    </div>
+                                    <div class="tab-pane fade" id="curmonth" role="tabpanel">
+                                        {% if result.current_month.continent or result.current_month.country or result.current_month.region or result.current_month.city or result.current_month.timezone or result.current_month.language %}
+                                        <div class="row mb-4">
+                                            <div class="col-xl-6 col-lg-6 col-md-12 col-xs-12 col-sm-12">
+                                                <h5 class="m-b-10">Continent</h5>
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Continent</th>
+                                                                <th class="text-end">Count</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% for tmp in result.current_month.continent %}
+                                                            <tr>
+                                                                <td>{{ tmp.continent }}</td>
+                                                                <td class="text-end">{{ tmp.count }}</td>
+                                                            </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-6 col-lg-6 col-md-12 col-xs-12 col-sm-12">
+                                                <h5 class="m-b-10">Country</h5>
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Country</th>
+                                                                <th class="text-end">Count</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% for tmp in result.current_month.country %}
+                                                            <tr>
+                                                                <td>{{ tmp.country }}</td>
+                                                                <td class="text-end">{{ tmp.count }}</td>
+                                                            </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-4">
+                                            <div class="col-xl-6 col-lg-6 col-md-12 col-xs-12 col-sm-12">
+                                                <h5 class="m-b-10">Region</h5>
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Region</th>
+                                                                <th class="text-end">Count</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% for tmp in result.current_month.region %}
+                                                            <tr>
+                                                                <td>{{ tmp.region }}</td>
+                                                                <td class="text-end">{{ tmp.count }}</td>
+                                                            </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-6 col-lg-6 col-md-12 col-xs-12 col-sm-12">
+                                                <h5 class="m-b-10">City</h5>
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>City</th>
+                                                                <th class="text-end">Count</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% for tmp in result.current_month.city %}
+                                                            <tr>
+                                                                <td>{{ tmp.city }}</td>
+                                                                <td class="text-end">{{ tmp.count }}</td>
+                                                            </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col-xl-6 col-lg-6 col-md-12 col-xs-12 col-sm-12">
+                                                <h5 class="m-b-10">Timezone</h5>
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Timezone</th>
+                                                                <th class="text-end">Count</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% for tmp in result.current_month.timezone %}
+                                                            <tr>
+                                                                <td>{{ tmp.timezone }}</td>
+                                                                <td class="text-end">{{ tmp.count }}</td>
+                                                            </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-6 col-lg-6 col-md-12 col-xs-12 col-sm-12">
+                                                <h5 class="m-b-10">Browser Language</h5>
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Browser Language</th>
+                                                                <th class="text-end">Count</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% for tmp in result.current_month.language %}
+                                                            <tr>
+                                                                <td>{{ tmp.language }}</td>
+                                                                <td class="text-end">{{ tmp.count }}</td>
+                                                            </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {% else %}
+                                        <h4><b>No data found.</b></h4>
+                                        {% endif %}
+                                    </div>
+                                    <div class="tab-pane fade" id="prevmonth" role="tabpanel">
+                                        {% if result.previous_month.continent or result.previous_month.country or result.previous_month.region or result.previous_month.city or result.previous_month.timezone or result.previous_month.language %}
+                                        <div class="row mb-4">
+                                            <div class="col-xl-6 col-lg-6 col-md-12 col-xs-12 col-sm-12">
+                                                <h5 class="m-b-10">Continent</h5>
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Continent</th>
+                                                                <th class="text-end">Count</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% for tmp in result.previous_month.continent %}
+                                                            <tr>
+                                                                <td>{{ tmp.continent }}</td>
+                                                                <td class="text-end">{{ tmp.count }}</td>
+                                                            </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-6 col-lg-6 col-md-12 col-xs-12 col-sm-12">
+                                                <h5 class="m-b-10">Country</h5>
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Country</th>
+                                                                <th class="text-end">Count</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% for tmp in result.previous_month.country %}
+                                                            <tr>
+                                                                <td>{{ tmp.country }}</td>
+                                                                <td class="text-end">{{ tmp.count }}</td>
+                                                            </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-4">
+                                            <div class="col-xl-6 col-lg-6 col-md-12 col-xs-12 col-sm-12">
+                                                <h5 class="m-b-10">Region</h5>
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Region</th>
+                                                                <th class="text-end">Count</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% for tmp in result.previous_month.region %}
+                                                            <tr>
+                                                                <td>{{ tmp.region }}</td>
+                                                                <td class="text-end">{{ tmp.count }}</td>
+                                                            </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-6 col-lg-6 col-md-12 col-xs-12 col-sm-12">
+                                                <h5 class="m-b-10">City</h5>
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>City</th>
+                                                                <th class="text-end">Count</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% for tmp in result.previous_month.city %}
+                                                            <tr>
+                                                                <td>{{ tmp.city }}</td>
+                                                                <td class="text-end">{{ tmp.count }}</td>
+                                                            </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col-xl-6 col-lg-6 col-md-12 col-xs-12 col-sm-12">
+                                                <h5 class="m-b-10">Timezone</h5>
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Timezone</th>
+                                                                <th class="text-end">Count</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% for tmp in result.previous_month.timezone %}
+                                                            <tr>
+                                                                <td>{{ tmp.timezone }}</td>
+                                                                <td class="text-end">{{ tmp.count }}</td>
+                                                            </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-6 col-lg-6 col-md-12 col-xs-12 col-sm-12">
+                                                <h5 class="m-b-10">Browser Language</h5>
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Browser Language</th>
+                                                                <th class="text-end">Count</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% for tmp in result.previous_month.language %}
+                                                            <tr>
+                                                                <td>{{ tmp.language }}</td>
+                                                                <td class="text-end">{{ tmp.count }}</td>
+                                                            </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {% else %}
+                                        <h4><b>No data found.</b></h4>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+{% endblock content %}

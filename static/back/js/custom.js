@@ -12,11 +12,23 @@ $(document).ready(function(){
         order: [[1, 'asc']],
         responsive: true,
     });
+    $('#allCompanies').on('click', '.change-company-group', function(){
+        var cid = $(this).attr('data-id');
+
+        $('#company').val();
+        $('#company').val(cid);
+    });
     $('#allCompanies').on('click', '.delete-company', function(){
         var cid = $(this).attr('data-id');
 
         $('#dcid').val();
         $('#dcid').val(cid);
+    });
+    $('#allCompanyEmails').on('click', '.delete-company-email', function(){
+        var eid = $(this).attr('data-id');
+
+        $('#deid').val();
+        $('#deid').val(eid);
     });
 
     $('#allCompanyUsers').on('click', '.delete-company-user', function(){
@@ -53,6 +65,12 @@ $(document).ready(function(){
 
         $('#dlid').val();
         $('#dlid').val(lid);
+    });
+    $('#allLeads').on('click', '.send-lead', function(){
+        var lid = $(this).attr('data-id');
+
+        $('#lid').val();
+        $('#lid').val(lid);
     });
     $('#allLeads').on('click', '.sent-leads', function(){
         var lid = $(this).attr('data-id');
@@ -263,5 +281,18 @@ $(document).ready(function(){
         $('#dwid').val(wid);
     });
 
+    $('#allVisitors').on('click', '.delete-visitor', function(){
+        var visitorid = $(this).attr('data-id');
+
+        $('#dvisitorid').val();
+        $('#dvisitorid').val(visitorid);
+    });
+    $('#allVisits').on('click', '.delete-visit', function(){
+        var visitid = $(this).attr('data-id');
+
+        $('#dvisitid').val();
+        $('#dvisitid').val(visitid);
+    });
+    
     
 })

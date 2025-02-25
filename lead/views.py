@@ -24,7 +24,7 @@ from django.db.models import Q
 @permission_classes([IsAuthenticated])
 def AdminAllLeads(request):
     leads = Lead.objects.all().order_by('-created_at') # Order by most recent
-    accounts = User.objects.all()
+    groups = Group.objects.all()
 
     paginator = Paginator(leads, 15)  # Show 15 leads per page
     page_number = request.GET.get('page')  # Get page number from URL
@@ -32,7 +32,7 @@ def AdminAllLeads(request):
         
     context = {
         'leads' : page_obj,
-        'accounts': accounts
+        'groups': groups
     }
     return render(request, 'work/leads/leads.html', context)
 
@@ -40,7 +40,7 @@ def AdminAllLeads(request):
 @permission_classes([IsAuthenticated])
 def AdminNormalLeads(request):
     leads = Lead.objects.filter(is_premium='No').order_by('-created_at') # Order by most recent
-    accounts = User.objects.all()
+    groups = Group.objects.exclude(name='Premium').all()
 
     paginator = Paginator(leads, 15)  # Show 15 leads per page
     page_number = request.GET.get('page')  # Get page number from URL
@@ -48,7 +48,7 @@ def AdminNormalLeads(request):
         
     context = {
         'leads' : page_obj,
-        'accounts': accounts
+        'groups': groups
     }
     return render(request, 'work/leads/leads-normal.html', context)
 
@@ -56,15 +56,13 @@ def AdminNormalLeads(request):
 @permission_classes([IsAuthenticated])
 def AdminPremiumLeads(request):
     leads = Lead.objects.filter(is_premium='Yes').order_by('-created_at') # Order by most recent
-    accounts = User.objects.all()
 
     paginator = Paginator(leads, 15)  # Show 15 leads per page
     page_number = request.GET.get('page')  # Get page number from URL
     page_obj = paginator.get_page(page_number)  # Get the correct page
         
     context = {
-        'leads' : page_obj,
-        'accounts': accounts
+        'leads' : page_obj
     }
     return render(request, 'work/leads/leads-premium.html', context)
 
@@ -140,25 +138,35 @@ def AdminSingleLeadEmail(request):
             email_subject = f"Lead from {lead.phone}"
             email_body = render_to_string('emails/lead-email.html', {'data': data})
 
-            emails = request.POST.get('emails').split(",")
+            companies = Company.objects.filter(group=request.POST.get('group')).all()
+            emails = User.objects.filter(admin__company__in=companies).values_list('email', flat=True)
+
+            if not emails:
+                messages.error(request, "No recipients found.")
+                return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+            
+            sent_logs = []
             for email in emails:
                 # Send the email
                 send_mail(
-                    email_subject,
-                    email_body,
-                    settings.DEFAULT_FROM_EMAIL,
-                    [email],  # Replace with your email address
+                    subject=email_subject,
+                    message="",
+                    from_email=settings.DEFAULT_FROM_EMAIL,
+                    recipient_list=[email],
                     html_message=email_body,
                 )
 
-                trans = Sent(
-                    lead_id = request.POST.get('lid'),
-                    to_email = email,
-                    phone = lead.phone,
-                    date = lead.date,
-                    time = lead.time
-                )
-                trans.save()
+                # Prepare email log
+                sent_logs.append(Sent(
+                    lead_id=request.POST.get('lid'),
+                    to_email=email,
+                    phone=lead.phone,
+                    date=lead.created_at.date(),
+                    time=lead.created_at.time()
+                ))
+
+            # Bulk save email logs
+            Sent.objects.bulk_create(sent_logs)
 
             messages.success(request, "Lead sent successfully!")
         except KeyError as e:
@@ -207,43 +215,31 @@ def AdminFetchEmailTransactions(request):
 @permission_classes([IsAuthenticated])
 def AdminUpdateLeadDetails(request):
     try:
-        if not request.POST['lead']:
+        if not request.POST.get('lead'):
             messages.error(request, "Lead ID is required.")
             return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
         
-        lead = Lead.objects.filter(unique_code=request.POST['lead']).first()
+        lead = Lead.objects.filter(unique_code=request.POST.get('lead')).first()
         if not lead:
             messages.error(request, "Lead not found.")
             return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+        
+        # Fields allowed to be updated
+        updatable_fields = ['source', 'type', 'is_premium', 'status', 'name', 'email', 'phone', 'part', 'make', 'model', 'year', 'size']
+        updated = False  # Flag to check if anything was updated
 
-        if request.POST['source'] != '' and request.POST['source'] != lead.source:
-            lead.source = request.POST['source']
-        if request.POST['name'] != '' and request.POST['name'] != lead.name:
-            lead.name = request.POST['name']
-        if request.POST['email'] != '' and request.POST['email'] != lead.email:
-            lead.email = request.POST['email']
-        if request.POST['mobile'] != '' and request.POST['mobile'] != lead.mobile:
-            lead.mobile = request.POST['mobile']
-        if request.POST['part'] != '' and request.POST['part'] != lead.part:
-            lead.part = request.POST['part']
-        if request.POST['make'] != '' and request.POST['make'] != lead.make:
-            lead.make = request.POST['make']
-        if request.POST['model'] != '' and request.POST['model'] != lead.model:
-            lead.model = request.POST['model']
-        if request.POST['year'] != '' and request.POST['year'] != lead.year:
-            lead.year = request.POST['year']
-        if request.POST['size'] != '' and request.POST['size'] != lead.size:
-            lead.size = request.POST['size']
-        if request.POST['type'] != '' and request.POST['type'] != lead.type:
-            lead.type = request.POST['type']
-        if request.POST['premium'] != '' and request.POST['premium'] != lead.is_premium:
-            lead.is_premium = request.POST['premium']
-        if request.POST['status'] != '' and request.POST['status'] != lead.status:
-            lead.status = request.POST['status']
+        for field in updatable_fields:
+            new_value = request.POST.get(field)
+            if new_value and new_value != getattr(lead, field):
+                setattr(lead, field, new_value)
+                updated = True
+            
+        if updated:
+            lead.save()
 
-        lead.save()
-
-        messages.success(request, "Lead details updated successfully!")
+            messages.success(request, "Lead details updated successfully!")
+        else:
+            messages.info(request, "No changes detected!")
     except KeyError as e:
         messages.error(request, f"Missing parameter: {str(e)}")
     except Exception as e:

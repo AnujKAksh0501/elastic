@@ -21,103 +21,10 @@
                             </a>
                         </div>
                         <div class="d-flex align-items-center gap-2 page-header-right-items-wrapper">
-                            <a href="javascript:void(0);" class="btn btn-icon btn-light-brand" data-bs-toggle="collapse" data-bs-target="#collapseOne">
-                                <i class="feather-bar-chart"></i>
-                            </a>
                             <a href="{% url 'AdminCreateCompany' %}" class="btn btn-primary">
                                 <i class="feather-plus me-2"></i>
                                 <span>Create Company</span>
                             </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div id="collapseOne" class="accordion-collapse collapse page-header-collapse">
-                <div class="accordion-body pb-2">
-                    <div class="row">
-                        <div class="col-xxl-3 col-md-6">
-                            <div class="card stretch stretch-full">
-                                <div class="card-body">
-                                    <div class="d-flex align-items-center justify-content-between">
-                                        <div class="d-flex align-items-center gap-3">
-                                            <div class="avatar-text avatar-xl rounded">
-                                                <i class="feather-users"></i>
-                                            </div>
-                                            <a href="javascript:void(0);" class="fw-bold d-block">
-                                                <span class="d-block">Total Leads</span>
-                                                <span class="fs-24 fw-bolder d-block">26,595</span>
-                                            </a>
-                                        </div>
-                                        <div class="badge bg-soft-success text-success">
-                                            <i class="feather-arrow-up fs-10 me-1"></i>
-                                            <span>36.85%</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xxl-3 col-md-6">
-                            <div class="card stretch stretch-full">
-                                <div class="card-body">
-                                    <div class="d-flex align-items-center justify-content-between">
-                                        <div class="d-flex align-items-center gap-3">
-                                            <div class="avatar-text avatar-xl rounded">
-                                                <i class="feather-user-check"></i>
-                                            </div>
-                                            <a href="javascript:void(0);" class="fw-bold d-block">
-                                                <span class="d-block">Active Leads</span>
-                                                <span class="fs-24 fw-bolder d-block">2,245</span>
-                                            </a>
-                                        </div>
-                                        <div class="badge bg-soft-danger text-danger">
-                                            <i class="feather-arrow-down fs-10 me-1"></i>
-                                            <span>24.56%</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xxl-3 col-md-6">
-                            <div class="card stretch stretch-full">
-                                <div class="card-body">
-                                    <div class="d-flex align-items-center justify-content-between">
-                                        <div class="d-flex align-items-center gap-3">
-                                            <div class="avatar-text avatar-xl rounded">
-                                                <i class="feather-user-plus"></i>
-                                            </div>
-                                            <a href="javascript:void(0);" class="fw-bold d-block">
-                                                <span class="d-block">New Leads</span>
-                                                <span class="fs-24 fw-bolder d-block">1,254</span>
-                                            </a>
-                                        </div>
-                                        <div class="badge bg-soft-success text-success">
-                                            <i class="feather-arrow-up fs-10 me-1"></i>
-                                            <span>33.29%</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xxl-3 col-md-6">
-                            <div class="card stretch stretch-full">
-                                <div class="card-body">
-                                    <div class="d-flex align-items-center justify-content-between">
-                                        <div class="d-flex align-items-center gap-3">
-                                            <div class="avatar-text avatar-xl rounded">
-                                                <i class="feather-user-minus"></i>
-                                            </div>
-                                            <a href="javascript:void(0);" class="fw-bold d-block">
-                                                <span class="d-block">Inactive Leads</span>
-                                                <span class="fs-24 fw-bolder d-block">4,586</span>
-                                            </a>
-                                        </div>
-                                        <div class="badge bg-soft-danger text-danger">
-                                            <i class="feather-arrow-down fs-10 me-1"></i>
-                                            <span>42.47%</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -161,6 +68,7 @@
                                                             <a href="{% url 'AdminEditCompanyDetails' company.unique_code %}" class="avatar-text avatar-md" title="Edit Company Details"><i class="feather feather-edit"></i></a>
                                                             <a href="{% url 'AdminAddNewCompanyUser' company.unique_code %}" class="avatar-text avatar-md" title="Add New User"><i class="feather feather-user-plus"></i></a>
                                                             <a href="{% url 'AdminAllCompanyUser' company.unique_code %}" class="avatar-text avatar-md" title="All Company Users"><i class="feather feather-users"></i></a>
+                                                            <a href="javascript:void(0);" data-id="{{ company.unique_code }}" class="change-company-group avatar-text avatar-md" data-bs-toggle="modal" data-bs-target="#changeGroup" title="Change Company Group"><i class="feather feather-refresh-cw"></i></a>
                                                             <a href="javascript:void(0);" data-id="{{ company.unique_code }}" class="delete-company avatar-text avatar-md text-danger" data-bs-toggle="modal" data-bs-target="#deleteCompany" title="Delete Company Records"><i class="feather feather-trash"></i></a>
                                                         </div>
                                                     </div>
@@ -176,6 +84,35 @@
                 </div>
             </div>
 
+            <div class="modal fade" id="changeGroup" tabindex="-1">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <form method="post" action="{% url 'AdminChangeCompanyGroup' %}">
+                            {% csrf_token %}
+                            <div class="modal-header">
+                                <h5 class="modal-title">Change Company Group</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="form-group mb-4">
+                                    <label class="form-label" for="group">Group</label>
+                                    <input type="hidden" id="company" name="company" value="">
+                                    <select class="form-select form-control" id="group" name="group">
+                                        <option value="" hidden> -- Select Group -- </option>
+                                        {% for group in groups %}
+                                        <option value="{{ group.name }}">{{ group.name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+                                <button type="submit" class="btn btn-primary">Save Changes</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
             <div class="modal fade show" id="deleteCompany" tabindex="-1" role="dialog" aria-modal="true">
                 <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered" role="document">
                     <div class="modal-content">

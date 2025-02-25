@@ -1,0 +1,398 @@
+{% extends "layouts/work.html" %}
+{% load static %}
+{% block title %}Elastic | Work | All Visits{% endblock %}
+{% block content %}
+            <div class="page-header">
+                <div class="page-header-left d-flex align-items-center">
+                    <div class="page-header-title">
+                        <h5 class="m-b-10">Welcome {{ user.first_name }}</h5>
+                    </div>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'AdminDashboard' %}">Dashboard</a></li>
+                        <li class="breadcrumb-item">All Visits</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="main-content">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card stretch stretch-full">
+                            <div class="card-body p-0">
+                                <div class="card stretch stretch-full">
+                                    <div class="card-body custom-card-action">
+                                        <ul class="nav mb-4 gap-4 sales-pipeline-tabs" role="tablist">
+                                            <li class="nav-item" role="presentation">
+                                                <a href="javascript:void(0);" class="nav-link text-start active" data-bs-toggle="tab" data-bs-target="#today" role="tab">
+                                                    <span class="amount fs-18 fw-bold my-1 d-block">Today</span>
+                                                </a>
+                                            </li>
+                                            <li class="nav-item" role="presentation">
+                                                <a href="javascript:void(0);" class="nav-link text-start" data-bs-toggle="tab" data-bs-target="#yesterday" role="tab">
+                                                    <span class="amount fs-18 fw-bold my-1 d-block">Yesterday</span>
+                                                </a>
+                                            </li>
+                                            <li class="nav-item" role="presentation">
+                                                <a href="javascript:void(0);" class="nav-link text-start" data-bs-toggle="tab" data-bs-target="#curweek" role="tab">
+                                                    <span class="amount fs-18 fw-bold my-1 d-block">Current Week</span>
+                                                </a>
+                                            </li>
+                                            <li class="nav-item" role="presentation">
+                                                <a href="javascript:void(0);" class="nav-link text-start" data-bs-toggle="tab" data-bs-target="#prevweek" role="tab">
+                                                    <span class="amount fs-18 fw-bold my-1 d-block">Previous Week</span>
+                                                </a>
+                                            </li>
+                                            <li class="nav-item" role="presentation">
+                                                <a href="javascript:void(0);" class="nav-link text-start" data-bs-toggle="tab" data-bs-target="#curmonth" role="tab">
+                                                    <span class="amount fs-18 fw-bold my-1 d-block">Current Month</span>
+                                                </a>
+                                            </li>
+                                            <li class="nav-item" role="presentation">
+                                                <a href="javascript:void(0);" class="nav-link text-start" data-bs-toggle="tab" data-bs-target="#prevmonth" role="tab">
+                                                    <span class="amount fs-18 fw-bold my-1 d-block">Previous Month</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                        <div class="tab-content">
+                                            <div class="tab-pane fade show active" id="today" role="tabpanel">
+                                                <div class="table-responsive px-2">
+                                                    <table class="table table-hover" id="allVisits">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Visitor ID</th>
+                                                                <th>Visit ID</th>
+                                                                <th>Visited URL</th>
+                                                                <th>Time Spent</th>
+                                                                <th class="text-end">Actions</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% for visit in todays %}
+                                                            <tr>
+                                                                <td>{{ visit.visitor.visitor_id }}</td>
+                                                                <td>{{ visit.visit_id }}</td>
+                                                                <td>{{ visit.visited_url }}</td>
+                                                                <td>{{ visit.visit_time_spent }}</td>
+                                                                <td>
+                                                                    <div class="hstack gap-2 justify-content-end">
+                                                                        <div class="hstack gap-2 justify-content-end">
+                                                                            <a href="{% url 'AdminViewVisitLogs' visit.visit_id %}" class="avatar-text avatar-md" title="View Visit Logs"><i class="feather feather-eye"></i></a>
+                                                                            <a href="javascript:void(0);" data-id="{{ visit.visit_id }}" class="delete-visit avatar-text avatar-md text-danger" data-bs-toggle="modal" data-bs-target="#deleteVisit" title="Delete Visit Record"><i class="feather feather-trash"></i></a>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+
+                                                    {% if todays %}
+                                                    <!-- Pagination -->
+                                                    <div class="pagination">
+                                                        {% if todays.has_previous %}
+                                                            <a class="btn btn-info" href="?page=1">First</a>
+                                                            <a class="btn btn-secondary" href="?page={{ todays.previous_page_number }}">Previous</a>
+                                                        {% endif %}
+
+                                                        <span class="btn btn-primary">{{ todays.number }}</span>
+
+                                                        {% if todays.has_next %}
+                                                            <a class="btn btn-secondary" href="?page={{ todays.next_page_number }}">Next</a>
+                                                            <a class="btn btn-info" href="?page={{ todays.paginator.num_pages }}">Last</a>
+                                                        {% endif %}
+                                                    </div>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                            <div class="tab-pane fade" id="yesterday" role="tabpanel">
+                                                <div class="table-responsive px-2">
+                                                    <table class="table table-hover" id="allVisits">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Visitor ID</th>
+                                                                <th>Visit ID</th>
+                                                                <th>Visited URL</th>
+                                                                <th>Time Spent</th>
+                                                                <th class="text-end">Actions</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% for visit in yesterdays %}
+                                                            <tr>
+                                                                <td>{{ visit.visitor.visitor_id }}</td>
+                                                                <td>{{ visit.visit_id }}</td>
+                                                                <td>{{ visit.visited_url }}</td>
+                                                                <td>{{ visit.visit_time_spent }}</td>
+                                                                <td>
+                                                                    <div class="hstack gap-2 justify-content-end">
+                                                                        <div class="hstack gap-2 justify-content-end">
+                                                                            <a href="{% url 'AdminViewVisitLogs' visit.visit_id %}" class="avatar-text avatar-md" title="View Visit Logs"><i class="feather feather-eye"></i></a>
+                                                                            <a href="javascript:void(0);" data-id="{{ visit.visit_id }}" class="delete-visit avatar-text avatar-md text-danger" data-bs-toggle="modal" data-bs-target="#deleteVisit" title="Delete Visit Record"><i class="feather feather-trash"></i></a>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+
+                                                    {% if yesterdays %}
+                                                    <!-- Pagination -->
+                                                    <div class="pagination">
+                                                        {% if yesterdays.has_previous %}
+                                                            <a class="btn btn-info" href="?page=1">First</a>
+                                                            <a class="btn btn-secondary" href="?page={{ yesterdays.previous_page_number }}">Previous</a>
+                                                        {% endif %}
+
+                                                        <span class="btn btn-primary">{{ yesterdays.number }}</span>
+
+                                                        {% if yesterdays.has_next %}
+                                                            <a class="btn btn-secondary" href="?page={{ yesterdays.next_page_number }}">Next</a>
+                                                            <a class="btn btn-info" href="?page={{ yesterdays.paginator.num_pages }}">Last</a>
+                                                        {% endif %}
+                                                    </div>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                            <div class="tab-pane fade" id="curweek" role="tabpanel">
+                                                <div class="table-responsive px-2">
+                                                    <table class="table table-hover" id="allVisits">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Visitor ID</th>
+                                                                <th>Visit ID</th>
+                                                                <th>Visited URL</th>
+                                                                <th>Time Spent</th>
+                                                                <th class="text-end">Actions</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% for visit in current_weeks %}
+                                                            <tr>
+                                                                <td>{{ visit.visitor.visitor_id }}</td>
+                                                                <td>{{ visit.visit_id }}</td>
+                                                                <td>{{ visit.visited_url }}</td>
+                                                                <td>{{ visit.visit_time_spent }}</td>
+                                                                <td>
+                                                                    <div class="hstack gap-2 justify-content-end">
+                                                                        <div class="hstack gap-2 justify-content-end">
+                                                                            <a href="{% url 'AdminViewVisitLogs' visit.visit_id %}" class="avatar-text avatar-md" title="View Visit Logs"><i class="feather feather-eye"></i></a>
+                                                                            <a href="javascript:void(0);" data-id="{{ visit.visit_id }}" class="delete-visit avatar-text avatar-md text-danger" data-bs-toggle="modal" data-bs-target="#deleteVisit" title="Delete Visit Record"><i class="feather feather-trash"></i></a>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+
+                                                    {% if current_weeks %}
+                                                    <!-- Pagination -->
+                                                    <div class="pagination">
+                                                        {% if current_weeks.has_previous %}
+                                                            <a class="btn btn-info" href="?page=1">First</a>
+                                                            <a class="btn btn-secondary" href="?page={{ current_weeks.previous_page_number }}">Previous</a>
+                                                        {% endif %}
+
+                                                        <span class="btn btn-primary">{{ current_weeks.number }}</span>
+
+                                                        {% if current_weeks.has_next %}
+                                                            <a class="btn btn-secondary" href="?page={{ current_weeks.next_page_number }}">Next</a>
+                                                            <a class="btn btn-info" href="?page={{ current_weeks.paginator.num_pages }}">Last</a>
+                                                        {% endif %}
+                                                    </div>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                            <div class="tab-pane fade" id="prevweek" role="tabpanel">
+                                                <div class="table-responsive px-2">
+                                                    <table class="table table-hover" id="allVisits">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Visitor ID</th>
+                                                                <th>Visit ID</th>
+                                                                <th>Visited URL</th>
+                                                                <th>Time Spent</th>
+                                                                <th class="text-end">Actions</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% for visit in previous_weeks %}
+                                                            <tr>
+                                                                <td>{{ visit.visitor.visitor_id }}</td>
+                                                                <td>{{ visit.visit_id }}</td>
+                                                                <td>{{ visit.visited_url }}</td>
+                                                                <td>{{ visit.visit_time_spent }}</td>
+                                                                <td>
+                                                                    <div class="hstack gap-2 justify-content-end">
+                                                                        <div class="hstack gap-2 justify-content-end">
+                                                                            <a href="{% url 'AdminViewVisitLogs' visit.visit_id %}" class="avatar-text avatar-md" title="View Visit Logs"><i class="feather feather-eye"></i></a>
+                                                                            <a href="javascript:void(0);" data-id="{{ visit.visit_id }}" class="delete-visit avatar-text avatar-md text-danger" data-bs-toggle="modal" data-bs-target="#deleteVisit" title="Delete Visit Record"><i class="feather feather-trash"></i></a>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+
+                                                    {% if previous_weeks %}
+                                                    <!-- Pagination -->
+                                                    <div class="pagination">
+                                                        {% if previous_weeks.has_previous %}
+                                                            <a class="btn btn-info" href="?page=1">First</a>
+                                                            <a class="btn btn-secondary" href="?page={{ previous_weeks.previous_page_number }}">Previous</a>
+                                                        {% endif %}
+
+                                                        <span class="btn btn-primary">{{ previous_weeks.number }}</span>
+
+                                                        {% if previous_weeks.has_next %}
+                                                            <a class="btn btn-secondary" href="?page={{ previous_weeks.next_page_number }}">Next</a>
+                                                            <a class="btn btn-info" href="?page={{ previous_weeks.paginator.num_pages }}">Last</a>
+                                                        {% endif %}
+                                                    </div>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                            <div class="tab-pane fade" id="curmonth" role="tabpanel">
+                                                <div class="table-responsive px-2">
+                                                    <table class="table table-hover" id="allVisits">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Visitor ID</th>
+                                                                <th>Visit ID</th>
+                                                                <th>Visited URL</th>
+                                                                <th>Time Spent</th>
+                                                                <th class="text-end">Actions</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% for visit in current_months %}
+                                                            <tr>
+                                                                <td>{{ visit.visitor.visitor_id }}</td>
+                                                                <td>{{ visit.visit_id }}</td>
+                                                                <td>{{ visit.visited_url }}</td>
+                                                                <td>{{ visit.visit_time_spent }}</td>
+                                                                <td>
+                                                                    <div class="hstack gap-2 justify-content-end">
+                                                                        <div class="hstack gap-2 justify-content-end">
+                                                                            <a href="{% url 'AdminViewVisitLogs' visit.visit_id %}" class="avatar-text avatar-md" title="View Visit Logs"><i class="feather feather-eye"></i></a>
+                                                                            <a href="javascript:void(0);" data-id="{{ visit.visit_id }}" class="delete-visit avatar-text avatar-md text-danger" data-bs-toggle="modal" data-bs-target="#deleteVisit" title="Delete Visit Record"><i class="feather feather-trash"></i></a>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+
+                                                    {% if current_months %}
+                                                    <!-- Pagination -->
+                                                    <div class="pagination">
+                                                        {% if current_months.has_previous %}
+                                                            <a class="btn btn-info" href="?page=1">First</a>
+                                                            <a class="btn btn-secondary" href="?page={{ current_months.previous_page_number }}">Previous</a>
+                                                        {% endif %}
+
+                                                        <span class="btn btn-primary">{{ current_months.number }}</span>
+
+                                                        {% if current_months.has_next %}
+                                                            <a class="btn btn-secondary" href="?page={{ current_months.next_page_number }}">Next</a>
+                                                            <a class="btn btn-info" href="?page={{ current_months.paginator.num_pages }}">Last</a>
+                                                        {% endif %}
+                                                    </div>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                            <div class="tab-pane fade" id="prevmonth" role="tabpanel">
+                                                <div class="table-responsive px-2">
+                                                    <table class="table table-hover" id="allVisits">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Visitor ID</th>
+                                                                <th>Visit ID</th>
+                                                                <th>Visited URL</th>
+                                                                <th>Time Spent</th>
+                                                                <th class="text-end">Actions</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% for visit in previous_months %}
+                                                            <tr>
+                                                                <td>{{ visit.visitor.visitor_id }}</td>
+                                                                <td>{{ visit.visit_id }}</td>
+                                                                <td>{{ visit.visited_url }}</td>
+                                                                <td>{{ visit.visit_time_spent }}</td>
+                                                                <td>
+                                                                    <div class="hstack gap-2 justify-content-end">
+                                                                        <div class="hstack gap-2 justify-content-end">
+                                                                            <a href="{% url 'AdminViewVisitLogs' visit.visit_id %}" class="avatar-text avatar-md" title="View Visit Logs"><i class="feather feather-eye"></i></a>
+                                                                            <a href="javascript:void(0);" data-id="{{ visit.visit_id }}" class="delete-visit avatar-text avatar-md text-danger" data-bs-toggle="modal" data-bs-target="#deleteVisit" title="Delete Visit Record"><i class="feather feather-trash"></i></a>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+
+                                                    {% if previous_months %}
+                                                    <!-- Pagination -->
+                                                    <div class="pagination">
+                                                        {% if previous_months.has_previous %}
+                                                            <a class="btn btn-info" href="?page=1">First</a>
+                                                            <a class="btn btn-secondary" href="?page={{ previous_months.previous_page_number }}">Previous</a>
+                                                        {% endif %}
+
+                                                        <span class="btn btn-primary">{{ previous_months.number }}</span>
+
+                                                        {% if previous_months.has_next %}
+                                                            <a class="btn btn-secondary" href="?page={{ previous_months.next_page_number }}">Next</a>
+                                                            <a class="btn btn-info" href="?page={{ previous_months.paginator.num_pages }}">Last</a>
+                                                        {% endif %}
+                                                    </div>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade show" id="deleteVisit" tabindex="-1" role="dialog" aria-modal="true">
+                {% csrf_token %}
+                <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <form method="post" action="{% url 'AdminDeleteVisit' %}">
+                            {% csrf_token %}
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="modalTitleId">Delete Visit Record</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="notes-box">
+                                    <div class="notes-content">
+                                        <div class="row">
+                                            <div class="col-md-12 mb-3">
+                                                <div class="note-title">
+                                                    <h3>Are your sure you want to delete selected visit's record?</h3>
+                                                    <input type="hidden" id="dvisitid" name="dvisitid" value="">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-success" data-bs-dismiss="modal">No</button>
+                                <button type="submit" class="btn btn-danger">Yes Delete</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+{% endblock content %}

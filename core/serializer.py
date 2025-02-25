@@ -16,6 +16,11 @@ class CompanySerializer(serializers.ModelSerializer):
         model = Company
         fields = '__all__'
 
+class CompanyEmailSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Companyemail
+        fields = '__all__'
+
 class CompanyLeadSerializer(serializers.ModelSerializer):
     class Meta:
         model = Companylead
@@ -45,9 +50,6 @@ class WebsiteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Website
         fields = '__all__'
-
-class ForgotPasswordSerializer(serializers.ModelSerializer):
-    email=serializers.EmailField()
 
     class Meta:
         model = User

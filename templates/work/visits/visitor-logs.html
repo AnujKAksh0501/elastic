@@ -1,0 +1,50 @@
+{% extends "layouts/work.html" %}
+{% load static %}
+{% block title %}Elastic | Work | Visitor Logs{% endblock %}
+{% block content %}
+            <div class="page-header">
+                <div class="page-header-left d-flex align-items-center">
+                    <div class="page-header-title">
+                        <h5 class="m-b-10">Welcome {{ user.first_name }}</h5>
+                    </div>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'AdminDashboard' %}">Dashboard</a></li>
+                        <li class="breadcrumb-item"><a href="{% url 'AdminAllVisitors' %}">All Visitors</a></li>
+                        <li class="breadcrumb-item">Visitor Logs</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="main-content">
+                <div class="row">
+                    <div class="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-xs-12 col-sm-12 mb-3">
+                        <div class="card stretch stretch-full">
+                            <div class="card-body">
+                                <div class="about-section mb-5">
+                                    <div class="table-responsive">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">Visited URL</th>
+                                                    <th scope="col">Time Spent</th>
+                                                    <th scope="col">Date Time</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for visit in visits %}
+                                                <tr>
+                                                    <td>{{ visit.visited_url }}</td>
+                                                    <td>{{ visit.visit_time_spent }}s</td>
+                                                    <td>{{ visit.created_at }}</td>
+                                                </tr>
+                                                {% endfor %}
+                                            <tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+{% endblock content %}

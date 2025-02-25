@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     "daphne",
     'channels',
     'matomo',
+    'apis',
     'core',
     'lead',
     'report',
@@ -97,7 +98,7 @@ CHANNER_LAYERS = {
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'saas',
+        'NAME': 'elastic',
         'USER': 'root',
         'PASSWORD': '',
         'HOST': '127.0.0.1',

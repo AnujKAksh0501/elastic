@@ -12,6 +12,7 @@
     
     <link rel="shortcut icon" type="image/x-icon" href="{% static 'back/images/favicon.png' %}">
     
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.5.0/css/flag-icon.min.css"/>
     <link rel="stylesheet" type="text/css" href="{% static 'back/css/bootstrap.min.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'back/vendors/css/vendors.min.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'back/vendors/css/dataTables.bs5.min.css' %}">
@@ -43,8 +44,23 @@
                         </a>
                         <ul class="nxl-submenu">
                             <li class="nxl-item"><a class="nxl-link" href="{% url 'AdminAllCompanies' %}">All Companies</a></li>
+                            <li class="nxl-item"><a class="nxl-link" href="{% url 'AdminViewCompanyEmails' %}">Company Email</a></li>
                             <li class="nxl-item"><a class="nxl-link" href="{% url 'AdminCreateCompany' %}">Create New Company</a></li>
                             <li class="nxl-item"><a class="nxl-link" href="{% url 'AdminAddNewCompanyUser' 'New' %}">Add New User</a></li>
+                        </ul>
+                    </li>
+                    <li class="nxl-item nxl-hasmenu">
+                        <a href="javascript:void(0);" class="nxl-link">
+                            <span class="nxl-micon"><i class="feather-globe"></i></span>
+                            <span class="nxl-mtext">Visitors</span><span class="nxl-arrow"><i class="feather-chevron-right"></i></span>
+                        </a>
+                        <ul class="nxl-submenu">
+                            <li class="nxl-item"><a class="nxl-link" href="{% url 'AdminVisitsOverview' %}">Overview</a></li>
+                            <li class="nxl-item"><a class="nxl-link" href="{% url 'AdminAllVisitors' %}">All Visitors</a></li>
+                            <li class="nxl-item"><a class="nxl-link" href="{% url 'AdminAllVisits' %}">All Visits</a></li>
+                            <li class="nxl-item"><a class="nxl-link" href="{% url 'AdminVisitLocations' %}">Locations</a></li>
+                            <li class="nxl-item"><a class="nxl-link" href="{% url 'AdminVisitDevices' %}">Devices</a></li>
+                            <li class="nxl-item"><a class="nxl-link" href="{% url 'AdminVisitSoftware' %}">Software</a></li>
                         </ul>
                     </li>
                     <li class="nxl-item nxl-hasmenu">
@@ -416,36 +432,183 @@
                 {% if message.tags == 'success'%}
                 Swal.fire({
                     title: "Successfull!",
-                    text: "{{ message.tags }}",
+                    text: "{{ message }}",
                     icon: "success"
                 });
                 {% elif message.tags == 'message' %}
                 Swal.fire({
                     title: "Message!",
-                    text: "{{ message.tags }}",
-                    icon: "success"
+                    text: "{{ message }}",
+                    icon: "info"
                 });
                 {% elif message.tags == 'error' %}
                 Swal.fire({
                     title: "Error!",
-                    text: "{{ message.tags }}",
+                    text: "{{ message }}",
                     icon: "error"
                 });
                 {% elif message.tags == 'info' %}
                 Swal.fire({
                     title: "Information!",
-                    text: "{{ message.tags }}",
-                    icon: "success"
+                    text: "{{ message }}",
+                    icon: "info"
                 });
                 {% elif message.tags == 'warning' %}
                 Swal.fire({
                     title: "Error!",
-                    text: "{{ message.tags }}",
-                    icon: "error"
+                    text: "{{ message }}",
+                    icon: "warning"
                 });
                 {% endif %}
             {% endfor %}
         {% endif %}
     </script>
+    {% if request.path == '/work/visits-overview' %}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", async function(){
+            fetch("{% url 'AdminHourlySiteVisits' %}")  // Call the API
+            .then(response => response.json())
+            .then(data => {
+                let labels = data.map(item => item.hour);
+                let values = data.map(item => item.total_visits);
+
+                let hasData = values.some(val => val > 0);  // Check if all values are 0
+
+                new Chart(document.getElementById("hourly-visit-chart"), {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: "Daily Visits (Last 10 Days)",
+                            data: values,
+                            backgroundColor: "blue",
+                            borderColor: "crimson",
+                            borderWidth: 2
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            y: { beginAtZero: true }
+                        }
+                    }
+                });
+            });
+            fetch("{% url 'AdminDailySiteVisits' %}")  // Call the API
+            .then(response => response.json())
+            .then(data => {
+                let labels = data.map(item => item.visit_date);
+                let values = data.map(item => item.total_visits);
+
+                let hasData = values.some(val => val > 0);  // Check if all values are 0
+
+                new Chart(document.getElementById("daily-visit-chart"), {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: "Daily Visits (Last 10 Days)",
+                            data: values,
+                            backgroundColor: "blue",
+                            borderColor: "crimson",
+                            borderWidth: 2
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            y: { beginAtZero: true }
+                        }
+                    }
+                });
+            });
+            fetch("{% url 'AdminWeeklySiteVisits' %}")  // API URL
+            .then(response => response.json())
+            .then(data => {
+                let labels = data.map(item => item.week);
+                let values = data.map(item => item.total_visits);
+
+                let hasData = values.some(val => val > 0);  // Check if all values are 0
+
+                new Chart(document.getElementById("weekly-visit-chart"), {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: "Weekly Visits (Last 10 Weeks)",
+                            data: values,
+                            backgroundColor: "blue",
+                            borderColor: "crimson",
+                            borderWidth: 2
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            y: { beginAtZero: true }
+                        }
+                    }
+                });
+            });
+            fetch("{% url 'AdminMonthlySiteVisits' %}")  // API URL
+            .then(response => response.json())
+            .then(data => {
+                let labels = data.map(item => item.visit_month);
+                let values = data.map(item => item.total_visits);
+
+                let hasData = values.some(val => val > 0);  // Check if all values are 0
+
+                new Chart(document.getElementById("monthly-visit-chart"), {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: "Monthly Visits (Last 10 Months)",
+                            data: values,
+                            backgroundColor: "blue",
+                            borderColor: "crimson",
+                            borderWidth: 2
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            y: { beginAtZero: true }
+                        }
+                    }
+                });
+            });
+            fetch("{% url 'AdminYearlySiteVisits' %}")  // API URL
+            .then(response => response.json())
+            .then(data => {
+                let labels = data.map(item => item.visit_year);
+                let values = data.map(item => item.total_visits);
+
+                let hasData = values.some(val => val > 0);  // Check if all values are 0
+
+                new Chart(document.getElementById("yearly-visit-chart"), {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: "Yearly Visits (Last 10 Years)",
+                            data: values,
+                            backgroundColor: "blue",
+                            borderColor: "crimson",
+                            borderWidth: 2
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            y: { beginAtZero: true }
+                        }
+                    }
+                });
+            });
+        })
+    </script>
+    {% endif %}
 </body>
 </html>

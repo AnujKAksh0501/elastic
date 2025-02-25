@@ -13,6 +13,8 @@ def code_generator():
         key = code_generator()
     elif Company.objects.filter(unique_code=key).exists():
         key = code_generator()
+    elif Companyemail.objects.filter(unique_code=key).exists():
+        key = code_generator()
     elif Companylead.objects.filter(unique_code=key).exists():
         key = code_generator()
     elif Otp.objects.filter(code=key).exists():
@@ -136,6 +138,15 @@ class Companylead(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, null=False, blank=False)
     updated_at = models.DateTimeField(auto_now=True, null=False, blank=False)
 
+class Companyemail(models.Model):
+    company = models.ForeignKey(Company, on_delete=models.SET_NULL, null=True, blank=True)
+    email = models.EmailField(max_length=255, null=True, blank=True)
+    unique_code = models.CharField(max_length=255, unique=True, default = code_generator, editable=False)
+    is_premium = models.CharField(max_length=255, default="No")
+    status = models.CharField(max_length=255, default="Active")
+    created_at = models.DateTimeField(auto_now_add=True, null=False, blank=False)
+    updated_at = models.DateTimeField(auto_now=True, null=False, blank=False)
+
 class Country(models.Model):
     name = models.CharField(max_length=255, null=True, blank=True)
     short_code = models.CharField(max_length=255, null=True, blank=True)
@@ -172,4 +183,3 @@ class Website(models.Model):
     status = models.CharField(max_length=255, default="Active")
     created_at = models.DateTimeField(auto_now_add=True, null=False, blank=False)
     updated_at = models.DateTimeField(auto_now=True, null=False, blank=False)
-

@@ -1,0 +1,626 @@
+{% extends "layouts/work.html" %}
+{% load static %}
+{% block title %}Elastic | Work | Visit Devices{% endblock %}
+{% block content %}
+            <div class="page-header">
+                <div class="page-header-left d-flex align-items-center">
+                    <div class="page-header-title">
+                        <h5 class="m-b-10">Welcome {{ user.first_name }}</h5>
+                    </div>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'AdminDashboard' %}">Dashboard</a></li>
+                        <li class="breadcrumb-item">Visit Devices</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="main-content">
+                <div class="card stretch stretch-full">
+                    <div class="card-body p-0">
+                        <div class="card stretch stretch-full">
+                            <div class="card-body custom-card-action">
+                                <ul class="nav mb-4 gap-4 sales-pipeline-tabs" role="tablist">
+                                    <li class="nav-item" role="presentation">
+                                        <a href="javascript:void(0);" class="nav-link text-start active" data-bs-toggle="tab" data-bs-target="#today" role="tab">
+                                            <span class="amount fs-18 fw-bold my-1 d-block">Today</span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <a href="javascript:void(0);" class="nav-link text-start" data-bs-toggle="tab" data-bs-target="#yesterday" role="tab">
+                                            <span class="amount fs-18 fw-bold my-1 d-block">Yesterday</span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <a href="javascript:void(0);" class="nav-link text-start" data-bs-toggle="tab" data-bs-target="#curweek" role="tab">
+                                            <span class="amount fs-18 fw-bold my-1 d-block">Current Week</span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <a href="javascript:void(0);" class="nav-link text-start" data-bs-toggle="tab" data-bs-target="#prevweek" role="tab">
+                                            <span class="amount fs-18 fw-bold my-1 d-block">Previous Week</span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <a href="javascript:void(0);" class="nav-link text-start" data-bs-toggle="tab" data-bs-target="#curmonth" role="tab">
+                                            <span class="amount fs-18 fw-bold my-1 d-block">Current Month</span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <a href="javascript:void(0);" class="nav-link text-start" data-bs-toggle="tab" data-bs-target="#prevmonth" role="tab">
+                                            <span class="amount fs-18 fw-bold my-1 d-block">Previous Month</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                                <div class="tab-content">
+                                    <div class="tab-pane fade show active" id="today" role="tabpanel">
+                                        {% if result.today.device or result.today.device_brand or result.today.device_model or result.today.device_screen %}
+                                        <div class="row mb-4">
+                                            <div class="col-xl-6 col-lg-6 col-md-12 col-xs-12 col-sm-12">
+                                                <h5 class="m-b-10">Device</h5>
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Device</th>
+                                                                <th class="text-end">Count</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% for tmp in result.today.device %}
+                                                            <tr>
+                                                                <td>{{ tmp.device }}</td>
+                                                                <td class="text-end">{{ tmp.count }}</td>
+                                                            </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-6 col-lg-6 col-md-12 col-xs-12 col-sm-12">
+                                                <h5 class="m-b-10">Device Brand</h5>
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Device Brand</th>
+                                                                <th class="text-end">Count</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% for tmp in result.today.device_brand %}
+                                                            <tr>
+                                                                <td>{{ tmp.device_brand }}</td>
+                                                                <td class="text-end">{{ tmp.count }}</td>
+                                                            </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-4">
+                                            <div class="col-xl-6 col-lg-6 col-md-12 col-xs-12 col-sm-12">
+                                                <h5 class="m-b-10">Device Model</h5>
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Device Model</th>
+                                                                <th class="text-end">Count</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% for tmp in result.today.device_model %}
+                                                            <tr>
+                                                                <td>{{ tmp.device_model }}</td>
+                                                                <td class="text-end">{{ tmp.count }}</td>
+                                                            </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-6 col-lg-6 col-md-12 col-xs-12 col-sm-12">
+                                                <h5 class="m-b-10">Screen Resolution</h5>
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Screen Resolution</th>
+                                                                <th class="text-end">Count</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% for tmp in result.today.device_screen %}
+                                                            <tr>
+                                                                <td>{{ tmp.device_screen }}</td>
+                                                                <td class="text-end">{{ tmp.count }}</td>
+                                                            </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {% else %}
+                                        <h4><b>No data found.</b></h4>
+                                        {% endif %}
+                                    </div>
+                                    <div class="tab-pane fade" id="yesterday" role="tabpanel">
+                                        {% if result.yesterday.device or result.yesterday.device_brand or result.yesterday.device_model or result.yesterday.device_screen %}
+                                        <div class="row mb-4">
+                                            <div class="col-xl-6 col-lg-6 col-md-12 col-xs-12 col-sm-12">
+                                                <h5 class="m-b-10">Device</h5>
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Device</th>
+                                                                <th class="text-end">Count</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% for tmp in result.yesterday.device %}
+                                                            <tr>
+                                                                <td>{{ tmp.device }}</td>
+                                                                <td class="text-end">{{ tmp.count }}</td>
+                                                            </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-6 col-lg-6 col-md-12 col-xs-12 col-sm-12">
+                                                <h5 class="m-b-10">Device Brand</h5>
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Device Brand</th>
+                                                                <th class="text-end">Count</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% for tmp in result.yesterday.device_brand %}
+                                                            <tr>
+                                                                <td>{{ tmp.device_brand }}</td>
+                                                                <td class="text-end">{{ tmp.count }}</td>
+                                                            </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-4">
+                                            <div class="col-xl-6 col-lg-6 col-md-12 col-xs-12 col-sm-12">
+                                                <h5 class="m-b-10">Device Model</h5>
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Device Model</th>
+                                                                <th class="text-end">Count</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% for tmp in result.yesterday.device_model %}
+                                                            <tr>
+                                                                <td>{{ tmp.device_model }}</td>
+                                                                <td class="text-end">{{ tmp.count }}</td>
+                                                            </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-6 col-lg-6 col-md-12 col-xs-12 col-sm-12">
+                                                <h5 class="m-b-10">Screen Resolution</h5>
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Screen Resolution</th>
+                                                                <th class="text-end">Count</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% for tmp in result.yesterday.device_screen %}
+                                                            <tr>
+                                                                <td>{{ tmp.device_screen }}</td>
+                                                                <td class="text-end">{{ tmp.count }}</td>
+                                                            </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {% else %}
+                                        <h4><b>No data found.</b></h4>
+                                        {% endif %}
+                                    </div>
+                                    <div class="tab-pane fade" id="curweek" role="tabpanel">
+                                        {% if result.current_week.device or result.current_week.device_brand or result.current_week.device_model or result.current_week.device_screen %}
+                                        <div class="row mb-4">
+                                            <div class="col-xl-6 col-lg-6 col-md-12 col-xs-12 col-sm-12">
+                                                <h5 class="m-b-10">Device</h5>
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Device</th>
+                                                                <th class="text-end">Count</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% for tmp in result.current_week.device %}
+                                                            <tr>
+                                                                <td>{{ tmp.device }}</td>
+                                                                <td class="text-end">{{ tmp.count }}</td>
+                                                            </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-6 col-lg-6 col-md-12 col-xs-12 col-sm-12">
+                                                <h5 class="m-b-10">Device Brand</h5>
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Device Brand</th>
+                                                                <th class="text-end">Count</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% for tmp in result.current_week.device_brand %}
+                                                            <tr>
+                                                                <td>{{ tmp.device_brand }}</td>
+                                                                <td class="text-end">{{ tmp.count }}</td>
+                                                            </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-4">
+                                            <div class="col-xl-6 col-lg-6 col-md-12 col-xs-12 col-sm-12">
+                                                <h5 class="m-b-10">Device Model</h5>
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Device Model</th>
+                                                                <th class="text-end">Count</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% for tmp in result.current_week.device_model %}
+                                                            <tr>
+                                                                <td>{{ tmp.device_model }}</td>
+                                                                <td class="text-end">{{ tmp.count }}</td>
+                                                            </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-6 col-lg-6 col-md-12 col-xs-12 col-sm-12">
+                                                <h5 class="m-b-10">Screen Resolution</h5>
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Screen Resolution</th>
+                                                                <th class="text-end">Count</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% for tmp in result.current_week.device_screen %}
+                                                            <tr>
+                                                                <td>{{ tmp.device_screen }}</td>
+                                                                <td class="text-end">{{ tmp.count }}</td>
+                                                            </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {% else %}
+                                        <h4><b>No data found.</b></h4>
+                                        {% endif %}
+                                    </div>
+                                    <div class="tab-pane fade" id="prevweek" role="tabpanel">
+                                        {% if result.previous_week.device or result.previous_week.device_brand or result.previous_week.device_model or result.previous_week.device_screen %}
+                                        <div class="row mb-4">
+                                            <div class="col-xl-6 col-lg-6 col-md-12 col-xs-12 col-sm-12">
+                                                <h5 class="m-b-10">Device</h5>
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Device</th>
+                                                                <th class="text-end">Count</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% for tmp in result.previous_week.device %}
+                                                            <tr>
+                                                                <td>{{ tmp.device }}</td>
+                                                                <td class="text-end">{{ tmp.count }}</td>
+                                                            </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-6 col-lg-6 col-md-12 col-xs-12 col-sm-12">
+                                                <h5 class="m-b-10">Device Brand</h5>
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Device Brand</th>
+                                                                <th class="text-end">Count</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% for tmp in result.previous_week.device_brand %}
+                                                            <tr>
+                                                                <td>{{ tmp.device_brand }}</td>
+                                                                <td class="text-end">{{ tmp.count }}</td>
+                                                            </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-4">
+                                            <div class="col-xl-6 col-lg-6 col-md-12 col-xs-12 col-sm-12">
+                                                <h5 class="m-b-10">Device Model</h5>
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Device Model</th>
+                                                                <th class="text-end">Count</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% for tmp in result.previous_week.device_model %}
+                                                            <tr>
+                                                                <td>{{ tmp.device_model }}</td>
+                                                                <td class="text-end">{{ tmp.count }}</td>
+                                                            </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-6 col-lg-6 col-md-12 col-xs-12 col-sm-12">
+                                                <h5 class="m-b-10">Screen Resolution</h5>
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Screen Resolution</th>
+                                                                <th class="text-end">Count</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% for tmp in result.previous_week.device_screen %}
+                                                            <tr>
+                                                                <td>{{ tmp.device_screen }}</td>
+                                                                <td class="text-end">{{ tmp.count }}</td>
+                                                            </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {% else %}
+                                        <h4><b>No data found.</b></h4>
+                                        {% endif %}
+                                    </div>
+                                    <div class="tab-pane fade" id="curmonth" role="tabpanel">
+                                        {% if result.current_month.device or result.current_month.device_brand or result.current_month.device_model or result.current_month.device_screen %}
+                                        <div class="row mb-4">
+                                            <div class="col-xl-6 col-lg-6 col-md-12 col-xs-12 col-sm-12">
+                                                <h5 class="m-b-10">Device</h5>
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Device</th>
+                                                                <th class="text-end">Count</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% for tmp in result.current_month.device %}
+                                                            <tr>
+                                                                <td>{{ tmp.device }}</td>
+                                                                <td class="text-end">{{ tmp.count }}</td>
+                                                            </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-6 col-lg-6 col-md-12 col-xs-12 col-sm-12">
+                                                <h5 class="m-b-10">Device Brand</h5>
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Device Brand</th>
+                                                                <th class="text-end">Count</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% for tmp in result.current_month.device_brand %}
+                                                            <tr>
+                                                                <td>{{ tmp.device_brand }}</td>
+                                                                <td class="text-end">{{ tmp.count }}</td>
+                                                            </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-4">
+                                            <div class="col-xl-6 col-lg-6 col-md-12 col-xs-12 col-sm-12">
+                                                <h5 class="m-b-10">Device Model</h5>
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Device Model</th>
+                                                                <th class="text-end">Count</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% for tmp in result.current_month.device_model %}
+                                                            <tr>
+                                                                <td>{{ tmp.device_model }}</td>
+                                                                <td class="text-end">{{ tmp.count }}</td>
+                                                            </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-6 col-lg-6 col-md-12 col-xs-12 col-sm-12">
+                                                <h5 class="m-b-10">Screen Resolution</h5>
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Screen Resolution</th>
+                                                                <th class="text-end">Count</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% for tmp in result.current_month.device_screen %}
+                                                            <tr>
+                                                                <td>{{ tmp.device_screen }}</td>
+                                                                <td class="text-end">{{ tmp.count }}</td>
+                                                            </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {% else %}
+                                        <h4><b>No data found.</b></h4>
+                                        {% endif %}
+                                    </div>
+                                    <div class="tab-pane fade" id="prevmonth" role="tabpanel">
+                                        {% if result.previous_month.device or result.previous_month.device_brand or result.previous_month.device_model or result.previous_month.device_screen %}
+                                        <div class="row mb-4">
+                                            <div class="col-xl-6 col-lg-6 col-md-12 col-xs-12 col-sm-12">
+                                                <h5 class="m-b-10">Device</h5>
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Device</th>
+                                                                <th class="text-end">Count</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% for tmp in result.previous_month.device %}
+                                                            <tr>
+                                                                <td>{{ tmp.device }}</td>
+                                                                <td class="text-end">{{ tmp.count }}</td>
+                                                            </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-6 col-lg-6 col-md-12 col-xs-12 col-sm-12">
+                                                <h5 class="m-b-10">Device Brand</h5>
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Device Brand</th>
+                                                                <th class="text-end">Count</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% for tmp in result.previous_month.device_brand %}
+                                                            <tr>
+                                                                <td>{{ tmp.device_brand }}</td>
+                                                                <td class="text-end">{{ tmp.count }}</td>
+                                                            </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-4">
+                                            <div class="col-xl-6 col-lg-6 col-md-12 col-xs-12 col-sm-12">
+                                                <h5 class="m-b-10">Device Model</h5>
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Device Model</th>
+                                                                <th class="text-end">Count</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% for tmp in result.previous_month.device_model %}
+                                                            <tr>
+                                                                <td>{{ tmp.device_model }}</td>
+                                                                <td class="text-end">{{ tmp.count }}</td>
+                                                            </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-6 col-lg-6 col-md-12 col-xs-12 col-sm-12">
+                                                <h5 class="m-b-10">Screen Resolution</h5>
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Screen Resolution</th>
+                                                                <th class="text-end">Count</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% for tmp in result.previous_month.device_screen %}
+                                                            <tr>
+                                                                <td>{{ tmp.device_screen }}</td>
+                                                                <td class="text-end">{{ tmp.count }}</td>
+                                                            </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {% else %}
+                                        <h4><b>No data found.</b></h4>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+{% endblock content %}

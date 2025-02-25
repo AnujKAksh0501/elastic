@@ -112,12 +112,12 @@
                             </div>
                             <div class="modal-body">
                                 <div class="form-group mb-4">
-                                    <label class="form-label" for="email">Email</label>
+                                    <label class="form-label" for="group">Group</label>
                                     <input type="hidden" id="lid" name="lid" value="">
-                                    <select class="form-select form-control" id="email" name="email" multiple>
-                                        <option value="" hidden> -- Select Email(s) -- </option>
-                                        {% for account in accounts %}
-                                        <option value="{{ account.email }}">{{ account.email }}</option>
+                                    <select class="form-select form-control" id="group" name="group" required>
+                                        <option value="" hidden> -- Select Group -- </option>
+                                        {% for group in groups %}
+                                        <option value="{{ group.name }}">{{ group.name }}</option>
                                         {% endfor %}
                                     </select>
                                 </div>

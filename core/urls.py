@@ -23,6 +23,7 @@ urlpatterns = [
     path('work/delete-company-lead', views.AdminDeleteCompanyLead, name='AdminDeleteCompanyLead'),
     path('work/edit-company-details/<str:code>', views.AdminEditCompanyDetails, name='AdminEditCompanyDetails'),
     path('work/update-company-details', views.AdminUpdateCompanyDetails, name='AdminUpdateCompanyDetails'),
+    path('work/change-company-group', views.AdminChangeCompanyGroup, name='AdminChangeCompanyGroup'),
     path('work/delete-company', views.AdminDeleteCompany, name='AdminDeleteCompany'),
 
     path('work/all-company-users/<str:code>', views.AdminAllCompanyUser, name='AdminAllCompanyUser'),
@@ -31,6 +32,10 @@ urlpatterns = [
     path('work/view-user-details/<str:code>', views.AdminViewUserDetails, name='AdminViewUserDetails'),
     path('work/update-company-user-details', views.AdminUpdateCompanyUserDetails, name='AdminUpdateCompanyUserDetails'),
     path('work/delete-company-user', views.AdminDeleteCompanyUser, name='AdminDeleteCompanyUser'),
+
+    path('work/view-company-emails', views.AdminViewCompanyEmails, name='AdminViewCompanyEmails'),
+    path('work/add-new-company-email', views.AdminAddNewCompanyEmail, name='AdminAddNewCompanyEmail'),
+    path('work/delete-company-email', views.AdminDeleteCompanyEmail, name='AdminDeleteCompanyEmail'),
 
     path('work/all-groups', views.AdminAllGroups, name='AdminAllGroups'),
     path('work/create-new-group', views.AdminCreateNewGroup, name='AdminCreateNewGroup'),
@@ -52,6 +57,7 @@ urlpatterns = [
     path('work/enable-otp-authentication', views.AdminEnableOtp, name='AdminEnableOtp'),
     path('work/disable-otp-authentication', views.AdminDisableOtp, name='AdminDisableOtp'),
     
+    path('', include('apis.urls')),
     path('', include('lead.urls')),
     path('', include('report.urls')),
 ]
